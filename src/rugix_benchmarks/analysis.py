@@ -31,7 +31,7 @@ def report(paper: Path, calibration: Path):
     """Require every planned sample before generating publication artifacts."""
     paper_plan, paper_samples = _load_complete(paper)
     calibration_plan, calibration_samples = _load_complete(calibration)
-    output = ROOT / "results/2026-10"
+    output = ROOT / "adaptive-downloads/results/2026-10"
     output.mkdir(parents=True, exist_ok=True)
     for name, directory in (("paper", paper), ("calculator", calibration)):
         for filename in ("plan.json", "samples.json", "provenance.json"):

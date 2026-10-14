@@ -55,8 +55,8 @@ def render(plan, groups, corrections, tables, labels):
     )
     templates = Path(__file__).with_name("templates")
     for name, destination in (
-        ("readme.md", ROOT / "README.md"),
-        ("calculator.md", ROOT / "results/2026-10/calculator.md"),
+        ("readme.md", ROOT / "adaptive-downloads/README.md"),
+        ("calculator.md", ROOT / "adaptive-downloads/results/2026-10/calculator.md"),
     ):
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text((templates / name).read_text().format_map(context))

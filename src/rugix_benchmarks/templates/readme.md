@@ -1,6 +1,6 @@
-# Rugix Benchmarks
+# Native Adaptive-Update Benchmarks
 
-Reproducible delta-update benchmarks for Rugix and RAUC. [Byte simulations](delta-updates/README.md) estimate download sizes across two years of Debian images. [Native installation benchmarks](adaptive-downloads/README.md) test selected image pairs with real bundles, Linux network shaping, and measured interface traffic.
+These benchmarks measure installation time and actual network traffic for Rugix and RAUC using real bundles, disposable KVM guests, and Linux network shaping. The [methodology](methodology.md) describes preparation, cache controls, verification, and traffic accounting. The [byte simulations](../delta-updates/README.md) provide the theoretical download-size estimates used in the comparison.
 
 ## Findings
 
@@ -45,28 +45,28 @@ Timing covers the native install command, including fetching, decoding, verifica
 - [Per-workload correction factors](results/2026-10/corrections.json) and [independently checked RAUC reuse](results/2026-10/reuse.json)
 - [Theoretical estimates](results/2026-10/theory) and [timing summaries](results/2026-10/summary.json)
 
-Packet captures and full native logs remain in the local campaign cache. Plans, samples, correction factors, and reuse statistics have [Sidex schemas](schemas/benchmark.sidex). Figures are available as SVG, PDF, and PNG beside the sample data.
+Packet captures and full native logs remain in the local campaign cache. Plans, samples, correction factors, and reuse statistics have [Sidex schemas](../schemas/benchmark.sidex). Figures are available as SVG, PDF, and PNG beside the sample data.
 
 ## Reproduce
 
-Use x86-64 Linux with writable `/dev/kvm`, Nix, and Podman. See the [native benchmark methodology](adaptive-downloads/README.md) for cache controls, timing boundaries, traffic accounting, and resource requirements.
+Use x86-64 Linux with writable `/dev/kvm`, Nix, and Podman. See the [methodology](methodology.md) for cache controls, timing boundaries, traffic accounting, and resource requirements. Run these commands from the repository root:
 
 ```sh
 nix develop path:./nix
 uv sync --locked
 uv run --locked rugix-benchmarks prepare
 uv run --locked rugix-benchmarks smoke
-uv run --locked rugix-benchmarks run --plan plans/paper.json --output .cache/paper
-uv run --locked rugix-benchmarks run --plan plans/calculator.json --output .cache/calculator
+uv run --locked rugix-benchmarks run --plan adaptive-downloads/plans/paper.json --output .cache/paper
+uv run --locked rugix-benchmarks run --plan adaptive-downloads/plans/calculator.json --output .cache/calculator
 uv run --locked rugix-benchmarks report
 ```
 
-Successful results resume with immutable input checks. Failed evidence is retained. The reporting command regenerates the tables, figures, README, calculator proposal, and `results/2026-10/article-data.json` from complete campaigns. Prose templates are in `src/rugix_benchmarks/templates`.
+Successful results resume with immutable input checks. Failed evidence is retained. The reporting command regenerates the benchmark README, tables, figures, calculator proposal, and `adaptive-downloads/results/2026-10/article-data.json` from complete campaigns. Prose templates are in `src/rugix_benchmarks/templates`.
 
 The article is maintained in Rugix Docs. To refresh its interactive graphs in an adjacent checkout:
 
 ```sh
-cp results/2026-10/article-data.json ../rugix-docs/src/components/native-delta-data.json
+cp adaptive-downloads/results/2026-10/article-data.json ../rugix-docs/src/components/native-delta-data.json
 ```
 
 ## Scope
