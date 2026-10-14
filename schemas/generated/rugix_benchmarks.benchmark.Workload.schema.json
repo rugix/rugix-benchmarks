@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Workload",
+  "type": "object",
+  "description": "Source and target filesystems for one update.",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/rugix_benchmarks.benchmark.Image"
+    },
+    "target": {
+      "$ref": "#/$defs/rugix_benchmarks.benchmark.Image"
+    }
+  },
+  "required": [
+    "id",
+    "source",
+    "target"
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "rugix_benchmarks.benchmark.Image": {
+      "$id": "rugix_benchmarks.benchmark.Image",
+      "type": "object",
+      "description": "An immutable Debian snapshot filesystem.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "suite": {
+          "type": "string"
+        },
+        "snapshot": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "suite",
+        "snapshot"
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

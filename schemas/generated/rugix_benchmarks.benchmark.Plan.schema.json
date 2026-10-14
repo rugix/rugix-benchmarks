@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Plan",
+  "type": "object",
+  "description": "Measured conditions. Latency is added packet round-trip time.",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "workloads": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rugix_benchmarks.benchmark.Workload"
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rugix_benchmarks.benchmark.Candidate"
+      }
+    },
+    "rtt_ms": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "uint32"
+      }
+    },
+    "repetitions": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "rate_bits_per_second": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "memory_mib": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "vcpus": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "order_seed": {
+      "type": "integer",
+      "format": "uint64"
+    }
+  },
+  "required": [
+    "schema_version",
+    "workloads",
+    "candidates",
+    "rtt_ms",
+    "repetitions",
+    "rate_bits_per_second",
+    "memory_mib",
+    "vcpus",
+    "order_seed"
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "rugix_benchmarks.benchmark.Candidate": {
+      "$id": "rugix_benchmarks.benchmark.Candidate",
+      "type": "object",
+      "description": "A named native installer configuration.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "updater": {
+          "$ref": "#/$defs/rugix_benchmarks.benchmark.Updater"
+        }
+      },
+      "required": [
+        "id",
+        "updater"
+      ],
+      "unevaluatedProperties": false
+    },
+    "rugix_benchmarks.benchmark.HttpProtocol": {
+      "$id": "rugix_benchmarks.benchmark.HttpProtocol",
+      "enum": [
+        {
+          "tag": "Http1"
+        },
+        {
+          "tag": "Http2"
+        }
+      ],
+      "description": "The actual HTTP protocol required by a candidate."
+    },
+    "rugix_benchmarks.benchmark.Image": {
+      "$id": "rugix_benchmarks.benchmark.Image",
+      "type": "object",
+      "description": "An immutable Debian snapshot filesystem.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "suite": {
+          "type": "string"
+        },
+        "snapshot": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "suite",
+        "snapshot"
+      ],
+      "unevaluatedProperties": false
+    },
+    "rugix_benchmarks.benchmark.Updater": {
+      "$id": "rugix_benchmarks.benchmark.Updater",
+      "description": "Native installer under measurement.",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "tag": {
+              "const": "Rugix"
+            },
+            "revision": {
+              "type": "string"
+            },
+            "chunker": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "tag",
+            "revision",
+            "chunker"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "tag": {
+              "const": "Rauc"
+            },
+            "version": {
+              "type": "string"
+            },
+            "compression_group_bytes": {
+              "type": "integer",
+              "format": "uint32"
+            },
+            "protocol": {
+              "$ref": "#/$defs/rugix_benchmarks.benchmark.HttpProtocol"
+            },
+            "tls": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "tag",
+            "version",
+            "compression_group_bytes",
+            "protocol",
+            "tls"
+          ]
+        }
+      ]
+    },
+    "rugix_benchmarks.benchmark.Workload": {
+      "$id": "rugix_benchmarks.benchmark.Workload",
+      "type": "object",
+      "description": "Source and target filesystems for one update.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/rugix_benchmarks.benchmark.Image"
+        },
+        "target": {
+          "$ref": "#/$defs/rugix_benchmarks.benchmark.Image"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "target"
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

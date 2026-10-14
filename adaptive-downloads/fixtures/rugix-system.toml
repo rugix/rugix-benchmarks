@@ -1,0 +1,24 @@
+[slots.boot-a]
+type = "block"
+device = "/dev/vda2"
+immutable = true
+[slots.boot-b]
+type = "block"
+device = "/dev/vda3"
+immutable = true
+[slots.system-a]
+type = "block"
+device = "/dev/vda4"
+immutable = true
+[slots.system-b]
+type = "block"
+device = "/dev/vda5"
+immutable = true
+[slots.corpus-source]
+type = "block"
+device = "/dev/vdb1"
+immutable = true
+[slots.corpus-target]
+type = "block"
+device = "/dev/vdb2"
+immutable = true

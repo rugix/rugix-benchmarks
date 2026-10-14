@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Sample",
+  "type": "object",
+  "description": "Native elapsed time and exact traffic for a verified installation.",
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "workload": {
+      "type": "string"
+    },
+    "candidate": {
+      "type": "string"
+    },
+    "repetition": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "rtt_ms": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "seconds": {
+      "type": "number"
+    },
+    "body_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "server_body_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "partial_http_responses": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "retransmitted_tcp_payload_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "download_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "upload_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "requests": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "connections": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "payload_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "source_sha256": {
+      "type": "string"
+    },
+    "payload_sha256": {
+      "type": "string"
+    },
+    "bundle_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "bundle_sha256": {
+      "type": "string"
+    },
+    "updater_sha256": {
+      "type": "string"
+    },
+    "plan_sha256": {
+      "type": "string"
+    },
+    "run_directory": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "workload",
+    "candidate",
+    "repetition",
+    "rtt_ms",
+    "seconds",
+    "body_bytes",
+    "server_body_bytes",
+    "partial_http_responses",
+    "retransmitted_tcp_payload_bytes",
+    "download_bytes",
+    "upload_bytes",
+    "requests",
+    "connections",
+    "payload_bytes",
+    "source_sha256",
+    "payload_sha256",
+    "bundle_bytes",
+    "bundle_sha256",
+    "updater_sha256",
+    "plan_sha256",
+    "run_directory"
+  ],
+  "unevaluatedProperties": false
+}

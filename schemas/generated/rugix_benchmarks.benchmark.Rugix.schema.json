@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Rugix",
+  "type": "object",
+  "description": "A pinned Rugix revision and block encoding.",
+  "properties": {
+    "revision": {
+      "type": "string"
+    },
+    "chunker": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "revision",
+    "chunker"
+  ],
+  "unevaluatedProperties": false
+}

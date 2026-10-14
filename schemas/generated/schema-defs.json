@@ -1,0 +1,447 @@
+{
+  "rugix_benchmarks.benchmark.Candidate": {
+    "type": "object",
+    "description": "A named native installer configuration.",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "updater": {
+        "$ref": "#/components/schemas/rugix_benchmarks.benchmark.Updater"
+      }
+    },
+    "required": [
+      "id",
+      "updater"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Correction": {
+    "type": "object",
+    "description": "Correction values retain separate body and complete-link estimates.",
+    "properties": {
+      "candidate": {
+        "type": "string"
+      },
+      "workload": {
+        "type": "string"
+      },
+      "model_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "body_factor": {
+        "type": "number"
+      },
+      "download_factor": {
+        "type": "number"
+      },
+      "total_factor": {
+        "type": "number"
+      },
+      "independent_workloads": {
+        "type": "integer",
+        "format": "uint32"
+      }
+    },
+    "required": [
+      "candidate",
+      "workload",
+      "model_bytes",
+      "body_factor",
+      "download_factor",
+      "total_factor",
+      "independent_workloads"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.HttpProtocol": {
+    "enum": [
+      {
+        "tag": "Http1"
+      },
+      {
+        "tag": "Http2"
+      }
+    ],
+    "description": "The actual HTTP protocol required by a candidate."
+  },
+  "rugix_benchmarks.benchmark.Image": {
+    "type": "object",
+    "description": "An immutable Debian snapshot filesystem.",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "suite": {
+        "type": "string"
+      },
+      "snapshot": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "suite",
+      "snapshot"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Plan": {
+    "type": "object",
+    "description": "Measured conditions. Latency is added packet round-trip time.",
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "workloads": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/rugix_benchmarks.benchmark.Workload"
+        }
+      },
+      "candidates": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/rugix_benchmarks.benchmark.Candidate"
+        }
+      },
+      "rtt_ms": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "format": "uint32"
+        }
+      },
+      "repetitions": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "rate_bits_per_second": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "memory_mib": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "vcpus": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "order_seed": {
+        "type": "integer",
+        "format": "uint64"
+      }
+    },
+    "required": [
+      "schema_version",
+      "workloads",
+      "candidates",
+      "rtt_ms",
+      "repetitions",
+      "rate_bits_per_second",
+      "memory_mib",
+      "vcpus",
+      "order_seed"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Rauc": {
+    "type": "object",
+    "description": "Native RAUC adaptive-update configuration.",
+    "properties": {
+      "version": {
+        "type": "string"
+      },
+      "compression_group_bytes": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "protocol": {
+        "$ref": "#/components/schemas/rugix_benchmarks.benchmark.HttpProtocol"
+      },
+      "tls": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "version",
+      "compression_group_bytes",
+      "protocol",
+      "tls"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Reuse": {
+    "type": "object",
+    "description": "Ideal block reuse checked against every native RAUC installation.",
+    "properties": {
+      "workload": {
+        "type": "string"
+      },
+      "chunk_bytes": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "chunks": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "logical_missing_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "logical_reuse_fraction": {
+        "type": "number"
+      },
+      "providers": {
+        "$ref": "#/components/schemas/rugix_benchmarks.benchmark.ReuseProviders"
+      },
+      "checked_installs": {
+        "type": "integer",
+        "format": "uint32"
+      }
+    },
+    "required": [
+      "workload",
+      "chunk_bytes",
+      "chunks",
+      "logical_missing_bytes",
+      "logical_reuse_fraction",
+      "providers",
+      "checked_installs"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.ReuseProviders": {
+    "type": "object",
+    "description": "Independent four-KiB reuse-provider counts for a target image.",
+    "properties": {
+      "zero_chunk": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "written_prefix": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "active_slot": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "source_image": {
+        "type": "integer",
+        "format": "uint64"
+      }
+    },
+    "required": [
+      "zero_chunk",
+      "written_prefix",
+      "active_slot",
+      "source_image"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Rugix": {
+    "type": "object",
+    "description": "A pinned Rugix revision and block encoding.",
+    "properties": {
+      "revision": {
+        "type": "string"
+      },
+      "chunker": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "revision",
+      "chunker"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Sample": {
+    "type": "object",
+    "description": "Native elapsed time and exact traffic for a verified installation.",
+    "properties": {
+      "schema_version": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "workload": {
+        "type": "string"
+      },
+      "candidate": {
+        "type": "string"
+      },
+      "repetition": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "rtt_ms": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "seconds": {
+        "type": "number"
+      },
+      "body_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "server_body_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "partial_http_responses": {
+        "type": "integer",
+        "format": "uint32"
+      },
+      "retransmitted_tcp_payload_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "download_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "upload_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "requests": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "connections": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "payload_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "source_sha256": {
+        "type": "string"
+      },
+      "payload_sha256": {
+        "type": "string"
+      },
+      "bundle_bytes": {
+        "type": "integer",
+        "format": "uint64"
+      },
+      "bundle_sha256": {
+        "type": "string"
+      },
+      "updater_sha256": {
+        "type": "string"
+      },
+      "plan_sha256": {
+        "type": "string"
+      },
+      "run_directory": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "schema_version",
+      "workload",
+      "candidate",
+      "repetition",
+      "rtt_ms",
+      "seconds",
+      "body_bytes",
+      "server_body_bytes",
+      "partial_http_responses",
+      "retransmitted_tcp_payload_bytes",
+      "download_bytes",
+      "upload_bytes",
+      "requests",
+      "connections",
+      "payload_bytes",
+      "source_sha256",
+      "payload_sha256",
+      "bundle_bytes",
+      "bundle_sha256",
+      "updater_sha256",
+      "plan_sha256",
+      "run_directory"
+    ],
+    "unevaluatedProperties": false
+  },
+  "rugix_benchmarks.benchmark.Updater": {
+    "description": "Native installer under measurement.",
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "const": "Rugix"
+          },
+          "revision": {
+            "type": "string"
+          },
+          "chunker": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tag",
+          "revision",
+          "chunker"
+        ]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "const": "Rauc"
+          },
+          "version": {
+            "type": "string"
+          },
+          "compression_group_bytes": {
+            "type": "integer",
+            "format": "uint32"
+          },
+          "protocol": {
+            "$ref": "#/components/schemas/rugix_benchmarks.benchmark.HttpProtocol"
+          },
+          "tls": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "tag",
+          "version",
+          "compression_group_bytes",
+          "protocol",
+          "tls"
+        ]
+      }
+    ]
+  },
+  "rugix_benchmarks.benchmark.Workload": {
+    "type": "object",
+    "description": "Source and target filesystems for one update.",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "source": {
+        "$ref": "#/components/schemas/rugix_benchmarks.benchmark.Image"
+      },
+      "target": {
+        "$ref": "#/components/schemas/rugix_benchmarks.benchmark.Image"
+      }
+    },
+    "required": [
+      "id",
+      "source",
+      "target"
+    ],
+    "unevaluatedProperties": false
+  }
+}

@@ -1,0 +1,128 @@
+//! Reproducible native delta-update experiments and measured traffic.
+
+/// A pinned Rugix revision and block encoding.
+#[json(rename_all = "snake_case")]
+record Rugix {
+    revision: string,
+    chunker: string,
+}
+
+/// The actual HTTP protocol required by a candidate.
+variant HttpProtocol {
+    Http1,
+    Http2,
+}
+
+/// Native RAUC adaptive-update configuration.
+#[json(rename_all = "snake_case")]
+record Rauc {
+    version: string,
+    compression_group_bytes: u32,
+    protocol: HttpProtocol,
+    tls: bool,
+}
+
+/// Native installer under measurement.
+variant Updater {
+    Rugix: Rugix,
+    Rauc: Rauc,
+}
+
+/// A named native installer configuration.
+record Candidate {
+    id: string,
+    updater: Updater,
+}
+
+/// An immutable Debian snapshot filesystem.
+record Image {
+    id: string,
+    suite: string,
+    snapshot: string,
+}
+
+/// Source and target filesystems for one update.
+record Workload {
+    id: string,
+    source: Image,
+    target: Image,
+}
+
+/// Measured conditions. Latency is added packet round-trip time.
+#[json(rename_all = "snake_case")]
+record Plan {
+    schema_version: u32,
+    workloads: [Workload],
+    candidates: [Candidate],
+    rtt_ms: [u32],
+    repetitions: u32,
+    rate_bits_per_second: u64,
+    memory_mib: u32,
+    vcpus: u32,
+    order_seed: u64,
+}
+
+/// Native elapsed time and exact traffic for a verified installation.
+#[json(rename_all = "snake_case")]
+record Sample {
+    schema_version: u32,
+    workload: string,
+    candidate: string,
+    repetition: u32,
+    rtt_ms: u32,
+    seconds: f64,
+    body_bytes: u64,
+    server_body_bytes: u64,
+    partial_http_responses: u32,
+    retransmitted_tcp_payload_bytes: u64,
+    download_bytes: u64,
+    upload_bytes: u64,
+    requests: u64,
+    connections: u64,
+    payload_bytes: u64,
+    #[json(name = "source_sha256")]
+    source_sha256: string,
+    #[json(name = "payload_sha256")]
+    payload_sha256: string,
+    bundle_bytes: u64,
+    #[json(name = "bundle_sha256")]
+    bundle_sha256: string,
+    #[json(name = "updater_sha256")]
+    updater_sha256: string,
+    #[json(name = "plan_sha256")]
+    plan_sha256: string,
+    run_directory: string,
+}
+
+/// Correction values retain separate body and complete-link estimates.
+#[json(rename_all = "snake_case")]
+record Correction {
+    candidate: string,
+    workload: string,
+    model_bytes: u64,
+    body_factor: f64,
+    download_factor: f64,
+    total_factor: f64,
+    independent_workloads: u32,
+}
+
+/// Independent four-KiB reuse-provider counts for a target image.
+#[json(rename_all = "snake_case")]
+record ReuseProviders {
+    zero_chunk: u64,
+    written_prefix: u64,
+    active_slot: u64,
+    source_image: u64,
+}
+
+/// Ideal block reuse checked against every native RAUC installation.
+#[json(rename_all = "snake_case")]
+record Reuse {
+    workload: string,
+    chunk_bytes: u32,
+    chunks: u64,
+    logical_missing_bytes: u64,
+    logical_reuse_fraction: f64,
+    providers: ReuseProviders,
+    checked_installs: u32,
+}

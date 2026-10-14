@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Reuse",
+  "type": "object",
+  "description": "Ideal block reuse checked against every native RAUC installation.",
+  "properties": {
+    "workload": {
+      "type": "string"
+    },
+    "chunk_bytes": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "chunks": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "logical_missing_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "logical_reuse_fraction": {
+      "type": "number"
+    },
+    "providers": {
+      "$ref": "#/$defs/rugix_benchmarks.benchmark.ReuseProviders"
+    },
+    "checked_installs": {
+      "type": "integer",
+      "format": "uint32"
+    }
+  },
+  "required": [
+    "workload",
+    "chunk_bytes",
+    "chunks",
+    "logical_missing_bytes",
+    "logical_reuse_fraction",
+    "providers",
+    "checked_installs"
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "rugix_benchmarks.benchmark.ReuseProviders": {
+      "$id": "rugix_benchmarks.benchmark.ReuseProviders",
+      "type": "object",
+      "description": "Independent four-KiB reuse-provider counts for a target image.",
+      "properties": {
+        "zero_chunk": {
+          "type": "integer",
+          "format": "uint64"
+        },
+        "written_prefix": {
+          "type": "integer",
+          "format": "uint64"
+        },
+        "active_slot": {
+          "type": "integer",
+          "format": "uint64"
+        },
+        "source_image": {
+          "type": "integer",
+          "format": "uint64"
+        }
+      },
+      "required": [
+        "zero_chunk",
+        "written_prefix",
+        "active_slot",
+        "source_image"
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

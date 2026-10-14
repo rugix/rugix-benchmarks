@@ -1,0 +1,21 @@
+[project]
+name = "rugix-benchmarks"
+version = "0.1.0"
+description = "Reproducible delta-update simulations and native installation benchmarks"
+requires-python = ">=3.12"
+dependencies = [
+  "click>=8.1,<9",
+  "h11>=0.16,<0.17",
+  "pydantic>=2.5,<3",
+  "matplotlib>=3.8,<4",
+  "rugix-testkit",
+]
+[project.scripts]
+rugix-benchmarks = "rugix_benchmarks.cli:main"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+[tool.uv.sources]
+rugix-testkit = { git = "https://github.com/rugix/rugix-testkit.git", rev = "5d871530eb0733257815d813dc76b586753dbfc5" }
+[tool.hatch.build.targets.wheel]
+packages = ["src/rugix_benchmarks"]

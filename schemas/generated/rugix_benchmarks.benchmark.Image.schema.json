@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Image",
+  "type": "object",
+  "description": "An immutable Debian snapshot filesystem.",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "suite": {
+      "type": "string"
+    },
+    "snapshot": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "suite",
+    "snapshot"
+  ],
+  "unevaluatedProperties": false
+}

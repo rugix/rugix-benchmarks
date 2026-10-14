@@ -1,0 +1,9 @@
+root = true
+recipes = ["core/debian-bootstrap", "core/debian-grub-setup", "core/set-hostname", "core/persist-root-home", "core/ssh", "toolchain"]
+[parameters."core/debian-bootstrap"]
+suite = "bookworm"
+snapshot = "20250611T033537Z"
+[parameters."core/rugix-ctrl"]
+version = "container"
+[parameters."core/set-hostname"]
+hostname = "rugix-benchmarks"

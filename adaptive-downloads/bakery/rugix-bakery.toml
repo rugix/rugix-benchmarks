@@ -1,0 +1,6 @@
+[repositories]
+rugix-extra = { git = "https://github.com/rugix/rugix-extra.git", rev = "8dbe4f8" }
+[systems.benchmark-amd64]
+layer = "benchmark"
+architecture = "amd64"
+target = "generic-grub-efi"

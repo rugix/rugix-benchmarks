@@ -1,0 +1,209 @@
+[
+  {
+    "candidate": "rugix-release",
+    "workload": "monthly",
+    "model_bytes": 179403120,
+    "body_factor": 1.055922171253209,
+    "download_factor": 1.1126098977542866,
+    "total_factor": 1.1519776356174853,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline",
+    "workload": "monthly",
+    "model_bytes": 179403120,
+    "body_factor": 0.9684544839576926,
+    "download_factor": 1.0149291606522786,
+    "total_factor": 1.0281745880450686,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-http",
+    "workload": "monthly",
+    "model_bytes": 187973516,
+    "body_factor": 1.2828482657099418,
+    "download_factor": 1.359898508255812,
+    "total_factor": 1.3729537409940238,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-tls-h1",
+    "workload": "monthly",
+    "model_bytes": 187973516,
+    "body_factor": 1.2828482657099418,
+    "download_factor": 1.3656197131515058,
+    "total_factor": 1.380052006900802,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-tls-h2",
+    "workload": "monthly",
+    "model_bytes": 187973516,
+    "body_factor": 1.2828482657099418,
+    "download_factor": 1.3621661521722028,
+    "total_factor": 1.3796225900248629,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-release",
+    "workload": "annual",
+    "model_bytes": 227008464,
+    "body_factor": 1.0369696832096975,
+    "download_factor": 1.0926528889248817,
+    "total_factor": 1.1314747982260256,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline",
+    "workload": "annual",
+    "model_bytes": 227008464,
+    "body_factor": 0.9657849585731746,
+    "download_factor": 1.0119098158384086,
+    "total_factor": 1.0267244220462193,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-http",
+    "workload": "annual",
+    "model_bytes": 233268288,
+    "body_factor": 1.2827233635803938,
+    "download_factor": 1.3606533477881058,
+    "total_factor": 1.3741794298245975,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-tls-h1",
+    "workload": "annual",
+    "model_bytes": 233268288,
+    "body_factor": 1.2827233635803938,
+    "download_factor": 1.3662121145245427,
+    "total_factor": 1.3812115987236122,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-tls-h2",
+    "workload": "annual",
+    "model_bytes": 233268288,
+    "body_factor": 1.2827233635803938,
+    "download_factor": 1.36252361486873,
+    "total_factor": 1.3807604100905477,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-release",
+    "workload": "major",
+    "model_bytes": 338441260,
+    "body_factor": 0.974915094572098,
+    "download_factor": 1.0273547291485678,
+    "total_factor": 1.064213527038636,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline",
+    "workload": "major",
+    "model_bytes": 338441260,
+    "body_factor": 0.964598867171219,
+    "download_factor": 1.0096457595034365,
+    "total_factor": 1.0259313831889174,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-http",
+    "workload": "major",
+    "model_bytes": 351948256,
+    "body_factor": 1.235584525811658,
+    "download_factor": 1.310584934394447,
+    "total_factor": 1.323412246145638,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-tls-h1",
+    "workload": "major",
+    "model_bytes": 351948256,
+    "body_factor": 1.235584525811658,
+    "download_factor": 1.3158166665272522,
+    "total_factor": 1.3300824908761588,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-tls-h2",
+    "workload": "major",
+    "model_bytes": 351948256,
+    "body_factor": 1.235584525811658,
+    "download_factor": 1.3123610250252242,
+    "total_factor": 1.3297831400534061,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline-casync16",
+    "workload": "monthly",
+    "model_bytes": 178409112,
+    "body_factor": 0.8948657286069559,
+    "download_factor": 0.9415105939207858,
+    "total_factor": 0.9559649229126818,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-http-32k",
+    "workload": "monthly",
+    "model_bytes": 188988340,
+    "body_factor": 1.4530955031405641,
+    "download_factor": 1.5530258480496733,
+    "total_factor": 1.5794584575958495,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline-casync16",
+    "workload": "annual",
+    "model_bytes": 232251940,
+    "body_factor": 0.8866971617115448,
+    "download_factor": 0.9319532960628876,
+    "total_factor": 0.945292418224795,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-http-32k",
+    "workload": "annual",
+    "model_bytes": 237092712,
+    "body_factor": 1.4363466516001555,
+    "download_factor": 1.5365289887105429,
+    "total_factor": 1.562920635029895,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline-casync16",
+    "workload": "major",
+    "model_bytes": 387625636,
+    "body_factor": 0.8826064847785248,
+    "download_factor": 0.9243706187688784,
+    "total_factor": 0.9385958414783484,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rauc-http-32k",
+    "workload": "major",
+    "model_bytes": 374193344,
+    "body_factor": 1.3852261225683373,
+    "download_factor": 1.4820180553505515,
+    "total_factor": 1.506907682997162,
+    "independent_workloads": 1
+  },
+  {
+    "candidate": "rugix-pipeline-casync16",
+    "workload": "minor-pooled",
+    "model_bytes": 410661052,
+    "body_factor": 0.8902459442391922,
+    "download_factor": 0.9361054040255077,
+    "total_factor": 0.9499290207828134,
+    "independent_workloads": 2
+  },
+  {
+    "candidate": "rauc-http-32k",
+    "workload": "minor-pooled",
+    "model_bytes": 426081052,
+    "body_factor": 1.443775608214561,
+    "download_factor": 1.5438461741312073,
+    "total_factor": 1.5702559896984107,
+    "independent_workloads": 2
+  }
+]

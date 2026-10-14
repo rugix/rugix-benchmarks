@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.ReuseProviders",
+  "type": "object",
+  "description": "Independent four-KiB reuse-provider counts for a target image.",
+  "properties": {
+    "zero_chunk": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "written_prefix": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "active_slot": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "source_image": {
+      "type": "integer",
+      "format": "uint64"
+    }
+  },
+  "required": [
+    "zero_chunk",
+    "written_prefix",
+    "active_slot",
+    "source_image"
+  ],
+  "unevaluatedProperties": false
+}

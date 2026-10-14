@@ -1,0 +1,300 @@
+{
+  "files": {
+    ".cache/theory/annual/rauc-65536.json": "edc6c28dd9cacd2130f6234175836d90370d41a1511cd670af85efcff4e2bf09",
+    ".cache/theory/annual/rugix-casync-64.json": "1ad93e1ac2aab01992aff7f217dbb069cd5206d33501ca9e8e6caac65b0bd11d",
+    ".cache/theory/bookworm-202506/base.json": "ed4f588a9e729c85cdff40f2fb7be4b95356fef8a3bdb81306ab5c50a4857b04",
+    ".cache/theory/major/rauc-65536.json": "7ef0f9870304003323a9c5237fbd36f1e3149aeb5dd6bb837420d87f965dc0e8",
+    ".cache/theory/major/rugix-casync-64.json": "f4e9c9295a64d3587dafe35b0a45cd16c4597632ec009c21f978431ab8ed6356",
+    ".cache/theory/monthly/rauc-65536.json": "df6fee5580ccf1c24172c192b09b65d898eba8d3b6f3da04a2457afda94c38f0",
+    ".cache/theory/monthly/rugix-casync-64.json": "938b5a138fbee6f6a7c565856579a6953fef96b5bbe785c0d440f7c04ec6e398",
+    "adaptive-downloads/fixtures/nginx.conf": "c878521440e151166f5a6ea26d4c5398c2f53e5fbda5657d8eae13a86cd92eeb",
+    "adaptive-downloads/fixtures/rauc-system.conf": "08127da72e0ce673f3888623b690d108d94488db5aa858c5c3755d2b87e796ae",
+    "adaptive-downloads/fixtures/rugix-system.toml": "ef6c65a190731047d8f4de5c8cd14d8fca5cc7cef7c0c10050d746cda4ceb8c2",
+    "adaptive-downloads/fixtures/setup-network.sh": "03a0c5bd4c06040ab6084041a5790f8e5488c4e0185c6de792d088db233d9f43",
+    "nix/flake.lock": "d745869336003db3aeda67e4fe78cf8af76bf193be03f58c3eee1dc88b7f7793",
+    "nix/flake.nix": "c66ddfcd0bf18dcdfa8a9dd685c438be2732a6dcf318e237d61c036357b81b2c",
+    "src/rugix_benchmarks/capture.py": "2fcf3efd5bd483211e81b86f2f8463e183e92654dd126ab3005874f4b4d31977",
+    "src/rugix_benchmarks/common.py": "8af938d0cf2dffacc7366dcaf5b60bd72e5a51028a0d61797fd215fa71924c54",
+    "src/rugix_benchmarks/fixtures.py": "5987f0ccac10f541c8dfcce154415d60b7558cfdcb61e1bd8196c994406bc35e",
+    "src/rugix_benchmarks/images.py": "94f612eba52beca6c00bf03a149835b3dd9ce4e28fbd8e076943c83b1227dc9d",
+    "src/rugix_benchmarks/models/__init__.py": "49c4b1ea5c4fd4d635fe339b8ec595a71c7b11cb373411a36ebb06f21e005e48",
+    "src/rugix_benchmarks/models/benchmark.py": "8480554de4b438aacddb0cebf239aad7d07c1c92edf2a82691d8921b96691f47",
+    "src/rugix_benchmarks/network.py": "a619cd6d8201f1b800fcfca37fda8c7f680632872a51f0df7a00c1f876152b29",
+    "src/rugix_benchmarks/runner.py": "d30da93312c00151fec7ba250179b3d19568ed9929aa2eccd10459f6d636c814",
+    "src/rugix_benchmarks/vm.py": "e3c0ebbf36daa32104ac665cc0feb04054a1abb0244458f8e1cfeb2a4c19c750",
+    "src/rugix_benchmarks/wire.py": "f060b64c574487dc04cbc05ae9e929c66ef970cef27d2fd8814f2e50c967de39",
+    "uv.lock": "80d20e5127fe19b961343a52d76aa56b63f693782af612c947b16280177e58c9"
+  },
+  "tools": {
+    "release": "/nix/store/nd6nzypkgj9q405nvbk1nk1zzwkvs24l-rugix-benchmark-tools-v1.3.0",
+    "pipeline": "/nix/store/60qb5hhxi2a234gkhsfi3z0mgz25nwvd-rugix-benchmark-tools-b82749f",
+    "runtime": "/nix/store/y1ndbr6fi55cjqsh0fnnvjavgamd777a-rugix-benchmark-runtime",
+    "release_revision": "48fc40d3d903730781f3dc4bf671873d2308573a",
+    "pipeline_revision": "b82749ff34ee8668fb3e53322af039a083e8bf69",
+    "binaries": {
+      "release": {
+        "sha256": "94490887a4141a7c563e18bb8c85ffde9e0876602aff3d6edf1a011dde3be52f",
+        "version": "rugix-ctrl v1.3.0"
+      },
+      "pipeline": {
+        "sha256": "114c0cfdd96d1e2887514deec370332e8081a697ec34e1e90850b029fffe2d14",
+        "version": "rugix-ctrl b82749f"
+      },
+      "rauc": {
+        "sha256": "2883423b6503da7df54ac15caa46ad95e306d1f78447ae75e75200db202c2cb8",
+        "version": "rauc 1.15.2"
+      },
+      "nginx": {
+        "sha256": "c808b7d900ee9d698f554d406b254c168bfe9e3915511953deac9a28dc958c07",
+        "version": "nginx version: nginx/1.30.5"
+      },
+      "iperf3": {
+        "sha256": "e64b44ce204b5844fc68ed8b7a2aec12a49f4f4e504906de29c0ba5fa8f1b322",
+        "version": "iperf 3.21 (cJSON 1.7.15)\nLinux pod_8sURuGfHvMp2pVq6LBYL2F 6.18.39 #1-NixOS SMP PREEMPT_DYNAMIC Sat Jul 18 14:53:38 UTC 2026 x86_64\nOptional features available: CPU affinity setting, IPv6 flow label, SCTP, TCP congestion algorithm setting, sendfile / zerocopy, socket pacing, authentication, bind to device, support IPv4 don't fragment, POSIX threads, GSO/GRO support"
+      },
+      "tcpdump": {
+        "sha256": "d489fb60194cba701c1f2774545cb36efb749490dda92605c2b5380d7addb6ac",
+        "version": "tcpdump version 4.99.7\nlibpcap version 1.10.7 (64-bit time_t, with TPACKET_V3)\n64-bit build, 64-bit time_t"
+      },
+      "ethtool": {
+        "sha256": "35ea422d17a7349569e2246f5b9afc3604cd89749c9f7c6343f78dba61fdae42",
+        "version": "ethtool version 7.1"
+      }
+    },
+    "runtime_archive_sha256": "c8c1f4fde917eaa781745924f97426e9a17b66861b7d969bf7496782022c8a11",
+    "guest_closure": [
+      "/nix/store/10dxp0qxqxxsyiljrh2kp0xqhz6arhcx-bash-5.3p15",
+      "/nix/store/1drh5zgdl78i6i1hcpwng886ip1avayj-lksctp-tools-1.0.21",
+      "/nix/store/2b7qphaayynqlc7yjkmkpdh3g1qy2p26-iperf-3.21-lib",
+      "/nix/store/328fx8r0jb6l2ai4cli7fhp8g26fbfnh-util-linux-minimal-2.42.3-lib",
+      "/nix/store/36alc2mwna4nzf6djdj2hvh4w4r3cai5-curl-8.22.0",
+      "/nix/store/3dkchpfn8r3ipsccl1001xhcl5smfjdx-glib-2.88.3",
+      "/nix/store/5v5iqqg6r41813swj2cf5hi4vrq347d5-libmnl-1.0.5",
+      "/nix/store/60qb5hhxi2a234gkhsfi3z0mgz25nwvd-rugix-benchmark-tools-b82749f",
+      "/nix/store/6k4rgdzx05z7yk2l98r28p6wrbnlv63z-nginx-1.30.5",
+      "/nix/store/6vqggv3cdqkh098nm8brbs2mwhn6bciy-libssh2-1.11.1",
+      "/nix/store/700nv9776ddw5fnksbf50fqvrv3cz5xp-iperf-3.21",
+      "/nix/store/7farq0bzaavajd0m70d14fg5ilinb4mz-rauc-1.15.2",
+      "/nix/store/7fjvn38n3dnv092jbmb4m87ik5qvmj7g-brotli-1.2.0-lib",
+      "/nix/store/7v8b5idfzwfl06hx6n0cvd5ikd5p0sbg-pcre2-10.48",
+      "/nix/store/80z9njiswl9xm6qk93zsjr5bj8v0z2lm-krb5-1.22.2-lib",
+      "/nix/store/8gjx3y4pyfqypqlq136v4gknmr2w51qj-zlib-ng-2.3.3",
+      "/nix/store/8rfsypg1qj64n6yagj71cbrwxjcig28h-openssl-4.0.3",
+      "/nix/store/8vq8ivlhfqkbhs7r9mmirsdp8gh8hmrm-ngtcp2-1.23.0",
+      "/nix/store/9x0m6s73sg89fv5awb95vsac2mbns8n0-sqlite-3.53.3",
+      "/nix/store/a95s1dqik2zl779g9cdxhnjyfagsajp1-ethtool-7.1",
+      "/nix/store/ck0idn9br0rq7a823q5fcm5njkmnzkl7-util-linux-2.42.3-lib",
+      "/nix/store/cxd8d2vg70c3pa31v2473hphaa1v0j44-openssl-3.5.8",
+      "/nix/store/ffl0cic7f8zjkwrjvd8ikzbkbiij690a-libselinux-3.10",
+      "/nix/store/g60m3aky9f59wgy1gi0y06xwmbw19d6m-xgcc-16.2.0-libgcc",
+      "/nix/store/gb06ab7h7dw9jf5vl0hfzyz6hi64sdwb-libpcap-1.10.7-lib",
+      "/nix/store/gqd8w84mhr0h24fnc2p4m3hkicsnxsfm-keyutils-1.6.3-lib",
+      "/nix/store/gvhdvn542cwd3wr2978nh4ydzp89msq7-systemd-minimal-libs-261.3",
+      "/nix/store/h4wfwic161kxrr74jlzla5lsm28hgary-glibc-2.44-25",
+      "/nix/store/j7qx4s4mr17j1wqgvqdzj33lmrnzb387-gcc-16.2.0-lib",
+      "/nix/store/jp8ql2fnd61xhvb4vsfp0bqwrzf16qrp-libunistring-1.4.2",
+      "/nix/store/kkf8p18x7bzclm671aq839qnp0rc3r5s-util-linux-minimal-2.42.3-login",
+      "/nix/store/lhk23vackrdgmxya733h3wp01xz622gn-libpsl-0.21.5",
+      "/nix/store/lsq3ar5wj6kh1s9l5b6a7hkyyjl3w9xr-json-glib-1.10.8",
+      "/nix/store/lwaxip7bab76znzlf419mzk2jqs588xl-rdma-core-65.0",
+      "/nix/store/nd6nzypkgj9q405nvbk1nk1zzwkvs24l-rugix-benchmark-tools-v1.3.0",
+      "/nix/store/ph4ib8mxy5yrw40k7a1l03bfd58hq6wj-zstd-1.5.7",
+      "/nix/store/pi2b23y3gv6zgcziwbgnihf8gam1cmlp-libffi-3.8.0",
+      "/nix/store/ppfy7c5nr5rd1xfwzlv3l8l6rridbnsm-libnl-3.12.0",
+      "/nix/store/q0lbdx5yv93a3md74kjhm0v2kljjii89-libidn2-2.3.8",
+      "/nix/store/q2mkz6ca1alqfqf750dygvakmq8kjrwz-gcc-16.2.0-libgcc",
+      "/nix/store/r6mrygmvszcs1l1a84x5g1g2x23h1l4a-libxslt-1.1.45",
+      "/nix/store/r9n1wja9zhj3w4r71pggxal3c6xqak2a-nghttp3-1.17.0",
+      "/nix/store/rs3qln4gfm3nfc33fghgdm08s9yma8y5-composefs-1.0.8-lib",
+      "/nix/store/sky8mslz50n51np0z4vhdq61jba12fh2-nghttp2-1.70.0-lib",
+      "/nix/store/slnrrf0hi7z6nihqhcz7zxs99yl3lfmw-rauc-source-index-1",
+      "/nix/store/vc5lcyxg999ix0wvm7wdhk8dkj625kdc-publicsuffix-list-0-unstable-2026-09-02",
+      "/nix/store/vfj3fn7rp56w7f3xy6vz5s41nziv4jgm-libxml2-2.15.4",
+      "/nix/store/vkwq2iap75p0srizppc3jl2j5b1lxpln-xz-5.8.4",
+      "/nix/store/wfpw2ap75ybh00as68ak481xwxrqvs4y-tcpdump-4.99.7",
+      "/nix/store/wgw25d181h0qks7qsfp1bh7c5nd3f0s7-zlib-1.3.2",
+      "/nix/store/wx1y0adli2qggk81pm4marx3km1scqxg-libxcrypt-4.5.2",
+      "/nix/store/y1ndbr6fi55cjqsh0fnnvjavgamd777a-rugix-benchmark-runtime"
+    ]
+  },
+  "fixtures": {
+    "monthly": {
+      "workload": "monthly",
+      "bundle_variants": [
+        "rugix-casync-64",
+        "rauc-65536",
+        "rugix-casync-16",
+        "rauc-32768"
+      ],
+      "source_sha256": "ee996c08051232c363ccc005a204992dac9458c4e70d5a3e53e2d04172e1eda5",
+      "target_sha256": "b4fb4ed8f5d172b31acc26b0ef486f0d42bd6084f3d33c324672d2a5aca5754c",
+      "native_image": {
+        "bytes": 2526019584,
+        "sha256": "4ca2b542623708da877b747553ced355f6b7ad66b73886ec2125ba4b2304ad63",
+        "bakery_image": "ghcr.io/rugix/rugix-bakery@sha256:7c8466d3823db8a012e20d03d523228359b1cce360ee03b3c5b9e14fbc9e11d1",
+        "source_date": "2025-07-01T00:00:00Z",
+        "runtime_archive_sha256": "c8c1f4fde917eaa781745924f97426e9a17b66861b7d969bf7496782022c8a11"
+      },
+      "tool_hashes": {
+        "release": {
+          "sha256": "94490887a4141a7c563e18bb8c85ffde9e0876602aff3d6edf1a011dde3be52f",
+          "version": "rugix-ctrl v1.3.0"
+        },
+        "pipeline": {
+          "sha256": "114c0cfdd96d1e2887514deec370332e8081a697ec34e1e90850b029fffe2d14",
+          "version": "rugix-ctrl b82749f"
+        },
+        "rauc": {
+          "sha256": "2883423b6503da7df54ac15caa46ad95e306d1f78447ae75e75200db202c2cb8",
+          "version": "rauc 1.15.2"
+        },
+        "nginx": {
+          "sha256": "c808b7d900ee9d698f554d406b254c168bfe9e3915511953deac9a28dc958c07",
+          "version": "nginx version: nginx/1.30.5"
+        },
+        "iperf3": {
+          "sha256": "e64b44ce204b5844fc68ed8b7a2aec12a49f4f4e504906de29c0ba5fa8f1b322",
+          "version": "iperf 3.21 (cJSON 1.7.15)\nLinux pod_8sURuGfHvMp2pVq6LBYL2F 6.18.39 #1-NixOS SMP PREEMPT_DYNAMIC Sat Jul 18 14:53:38 UTC 2026 x86_64\nOptional features available: CPU affinity setting, IPv6 flow label, SCTP, TCP congestion algorithm setting, sendfile / zerocopy, socket pacing, authentication, bind to device, support IPv4 don't fragment, POSIX threads, GSO/GRO support"
+        },
+        "tcpdump": {
+          "sha256": "d489fb60194cba701c1f2774545cb36efb749490dda92605c2b5380d7addb6ac",
+          "version": "tcpdump version 4.99.7\nlibpcap version 1.10.7 (64-bit time_t, with TPACKET_V3)\n64-bit build, 64-bit time_t"
+        },
+        "ethtool": {
+          "sha256": "35ea422d17a7349569e2246f5b9afc3604cd89749c9f7c6343f78dba61fdae42",
+          "version": "ethtool version 7.1"
+        }
+      }
+    },
+    "annual": {
+      "workload": "annual",
+      "bundle_variants": [
+        "rugix-casync-64",
+        "rauc-65536",
+        "rugix-casync-16",
+        "rauc-32768"
+      ],
+      "source_sha256": "3c92eab91ad4f77efb029e27ae8c91f1570771e5eb04dcce4e472d3e63c28f75",
+      "target_sha256": "b4fb4ed8f5d172b31acc26b0ef486f0d42bd6084f3d33c324672d2a5aca5754c",
+      "native_image": {
+        "bytes": 2526019584,
+        "sha256": "4ca2b542623708da877b747553ced355f6b7ad66b73886ec2125ba4b2304ad63",
+        "bakery_image": "ghcr.io/rugix/rugix-bakery@sha256:7c8466d3823db8a012e20d03d523228359b1cce360ee03b3c5b9e14fbc9e11d1",
+        "source_date": "2025-07-01T00:00:00Z",
+        "runtime_archive_sha256": "c8c1f4fde917eaa781745924f97426e9a17b66861b7d969bf7496782022c8a11"
+      },
+      "tool_hashes": {
+        "release": {
+          "sha256": "94490887a4141a7c563e18bb8c85ffde9e0876602aff3d6edf1a011dde3be52f",
+          "version": "rugix-ctrl v1.3.0"
+        },
+        "pipeline": {
+          "sha256": "114c0cfdd96d1e2887514deec370332e8081a697ec34e1e90850b029fffe2d14",
+          "version": "rugix-ctrl b82749f"
+        },
+        "rauc": {
+          "sha256": "2883423b6503da7df54ac15caa46ad95e306d1f78447ae75e75200db202c2cb8",
+          "version": "rauc 1.15.2"
+        },
+        "nginx": {
+          "sha256": "c808b7d900ee9d698f554d406b254c168bfe9e3915511953deac9a28dc958c07",
+          "version": "nginx version: nginx/1.30.5"
+        },
+        "iperf3": {
+          "sha256": "e64b44ce204b5844fc68ed8b7a2aec12a49f4f4e504906de29c0ba5fa8f1b322",
+          "version": "iperf 3.21 (cJSON 1.7.15)\nLinux pod_8sURuGfHvMp2pVq6LBYL2F 6.18.39 #1-NixOS SMP PREEMPT_DYNAMIC Sat Jul 18 14:53:38 UTC 2026 x86_64\nOptional features available: CPU affinity setting, IPv6 flow label, SCTP, TCP congestion algorithm setting, sendfile / zerocopy, socket pacing, authentication, bind to device, support IPv4 don't fragment, POSIX threads, GSO/GRO support"
+        },
+        "tcpdump": {
+          "sha256": "d489fb60194cba701c1f2774545cb36efb749490dda92605c2b5380d7addb6ac",
+          "version": "tcpdump version 4.99.7\nlibpcap version 1.10.7 (64-bit time_t, with TPACKET_V3)\n64-bit build, 64-bit time_t"
+        },
+        "ethtool": {
+          "sha256": "35ea422d17a7349569e2246f5b9afc3604cd89749c9f7c6343f78dba61fdae42",
+          "version": "ethtool version 7.1"
+        }
+      }
+    },
+    "major": {
+      "workload": "major",
+      "bundle_variants": [
+        "rugix-casync-64",
+        "rauc-65536",
+        "rugix-casync-16",
+        "rauc-32768"
+      ],
+      "source_sha256": "bea2ca4b8b197eb2e79353c7fa8e6a96bda0a2d516e182cd2488a13d5aff61f4",
+      "target_sha256": "b4fb4ed8f5d172b31acc26b0ef486f0d42bd6084f3d33c324672d2a5aca5754c",
+      "native_image": {
+        "bytes": 2526019584,
+        "sha256": "4ca2b542623708da877b747553ced355f6b7ad66b73886ec2125ba4b2304ad63",
+        "bakery_image": "ghcr.io/rugix/rugix-bakery@sha256:7c8466d3823db8a012e20d03d523228359b1cce360ee03b3c5b9e14fbc9e11d1",
+        "source_date": "2025-07-01T00:00:00Z",
+        "runtime_archive_sha256": "c8c1f4fde917eaa781745924f97426e9a17b66861b7d969bf7496782022c8a11"
+      },
+      "tool_hashes": {
+        "release": {
+          "sha256": "94490887a4141a7c563e18bb8c85ffde9e0876602aff3d6edf1a011dde3be52f",
+          "version": "rugix-ctrl v1.3.0"
+        },
+        "pipeline": {
+          "sha256": "114c0cfdd96d1e2887514deec370332e8081a697ec34e1e90850b029fffe2d14",
+          "version": "rugix-ctrl b82749f"
+        },
+        "rauc": {
+          "sha256": "2883423b6503da7df54ac15caa46ad95e306d1f78447ae75e75200db202c2cb8",
+          "version": "rauc 1.15.2"
+        },
+        "nginx": {
+          "sha256": "c808b7d900ee9d698f554d406b254c168bfe9e3915511953deac9a28dc958c07",
+          "version": "nginx version: nginx/1.30.5"
+        },
+        "iperf3": {
+          "sha256": "e64b44ce204b5844fc68ed8b7a2aec12a49f4f4e504906de29c0ba5fa8f1b322",
+          "version": "iperf 3.21 (cJSON 1.7.15)\nLinux pod_8sURuGfHvMp2pVq6LBYL2F 6.18.39 #1-NixOS SMP PREEMPT_DYNAMIC Sat Jul 18 14:53:38 UTC 2026 x86_64\nOptional features available: CPU affinity setting, IPv6 flow label, SCTP, TCP congestion algorithm setting, sendfile / zerocopy, socket pacing, authentication, bind to device, support IPv4 don't fragment, POSIX threads, GSO/GRO support"
+        },
+        "tcpdump": {
+          "sha256": "d489fb60194cba701c1f2774545cb36efb749490dda92605c2b5380d7addb6ac",
+          "version": "tcpdump version 4.99.7\nlibpcap version 1.10.7 (64-bit time_t, with TPACKET_V3)\n64-bit build, 64-bit time_t"
+        },
+        "ethtool": {
+          "sha256": "35ea422d17a7349569e2246f5b9afc3604cd89749c9f7c6343f78dba61fdae42",
+          "version": "ethtool version 7.1"
+        }
+      }
+    }
+  },
+  "bundles": {
+    "bookworm-202506/rugix-casync-64": {
+      "filename": "system.rugixb",
+      "bytes": 346576675,
+      "sha256": "dd749952b2dde7fa1b0d0cb84f6e861b12bd146bf52e409e870898a445954e9c",
+      "payload": {
+        "bytes": 1479823360,
+        "sha256": "b4fb4ed8f5d172b31acc26b0ef486f0d42bd6084f3d33c324672d2a5aca5754c"
+      },
+      "trusted_hash": "sha512-256:f7839e0d19a6921b88a8958bc489440191b13f3f2e0af55e32bfbc17f4c58e31"
+    },
+    "bookworm-202506/rauc-65536": {
+      "filename": "system.raucb",
+      "bytes": 379586295,
+      "sha256": "dffd21f7206eca96bd3feb175ffb4bebf2836535c2295ec3500a91bf3860e759",
+      "payload": {
+        "bytes": 1479823360,
+        "sha256": "b4fb4ed8f5d172b31acc26b0ef486f0d42bd6084f3d33c324672d2a5aca5754c"
+      },
+      "trusted_hash": null
+    }
+  },
+  "python": "3.13.5 (main, Aug 10 2026, 12:06:59) [GCC 14.2.0]",
+  "qemu": "QEMU emulator version 11.1.1\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers\n",
+  "host_kernel": "Linux pod_8sURuGfHvMp2pVq6LBYL2F 6.18.39 #1-NixOS SMP PREEMPT_DYNAMIC Sat Jul 18 14:53:38 UTC 2026 x86_64 GNU/Linux\n",
+  "host_cpu": {
+    "vendor_id": "AuthenticAMD",
+    "cpu family": "26",
+    "model": "112",
+    "model name": "AMD RYZEN AI MAX+ 395 w/ Radeon 8060S",
+    "stepping": "0",
+    "microcode": "0xb700037",
+    "flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm rep_good nopl xtopology cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw perfctr_core ssbd perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 clzero xsaveerptr wbnoinvd arat npt lbrv nrip_save tsc_scale vmcb_clean flushbyasid pausefilter pfthreshold v_vmsave_vmload vgif vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid movdiri movdir64b overflow_recov succor fsrm avx512_vp2intersect flush_l1d"
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "workload": "monthly",
+    "chunk_bytes": 4096,
+    "chunks": 361285,
+    "logical_missing_bytes": 419147776,
+    "logical_reuse_fraction": 0.7167582379561841,
+    "providers": {
+      "zero_chunk": 54254,
+      "written_prefix": 17097,
+      "active_slot": 187603,
+      "source_image": 102331
+    },
+    "checked_installs": 50
+  },
+  {
+    "workload": "annual",
+    "chunk_bytes": 4096,
+    "chunks": 361285,
+    "logical_missing_bytes": 616099840,
+    "logical_reuse_fraction": 0.5836666343745243,
+    "providers": {
+      "zero_chunk": 54254,
+      "written_prefix": 17097,
+      "active_slot": 139519,
+      "source_image": 150415
+    },
+    "checked_installs": 50
+  },
+  {
+    "workload": "major",
+    "chunk_bytes": 4096,
+    "chunks": 361285,
+    "logical_missing_bytes": 1067122688,
+    "logical_reuse_fraction": 0.2788850907178543,
+    "providers": {
+      "zero_chunk": 54254,
+      "written_prefix": 17097,
+      "active_slot": 29406,
+      "source_image": 260528
+    },
+    "checked_installs": 50
+  }
+]

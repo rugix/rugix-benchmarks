@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.HttpProtocol",
+  "enum": [
+    {
+      "tag": "Http1"
+    },
+    {
+      "tag": "Http2"
+    }
+  ],
+  "description": "The actual HTTP protocol required by a candidate."
+}

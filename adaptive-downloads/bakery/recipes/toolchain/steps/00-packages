@@ -1,0 +1,7 @@
+iproute2
+iputils-ping
+curl
+kmod
+util-linux
+systemd-resolved
+grub-common

@@ -1,0 +1,5 @@
+[bundle]
+name = "rugix_benchmarks"
+version = "0.1.0"
+[backend.py]
+[backend.json-schema]

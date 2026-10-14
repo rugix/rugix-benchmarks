@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Correction",
+  "type": "object",
+  "description": "Correction values retain separate body and complete-link estimates.",
+  "properties": {
+    "candidate": {
+      "type": "string"
+    },
+    "workload": {
+      "type": "string"
+    },
+    "model_bytes": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "body_factor": {
+      "type": "number"
+    },
+    "download_factor": {
+      "type": "number"
+    },
+    "total_factor": {
+      "type": "number"
+    },
+    "independent_workloads": {
+      "type": "integer",
+      "format": "uint32"
+    }
+  },
+  "required": [
+    "candidate",
+    "workload",
+    "model_bytes",
+    "body_factor",
+    "download_factor",
+    "total_factor",
+    "independent_workloads"
+  ],
+  "unevaluatedProperties": false
+}

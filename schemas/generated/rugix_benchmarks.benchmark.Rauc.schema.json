@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Rauc",
+  "type": "object",
+  "description": "Native RAUC adaptive-update configuration.",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "compression_group_bytes": {
+      "type": "integer",
+      "format": "uint32"
+    },
+    "protocol": {
+      "$ref": "#/$defs/rugix_benchmarks.benchmark.HttpProtocol"
+    },
+    "tls": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "version",
+    "compression_group_bytes",
+    "protocol",
+    "tls"
+  ],
+  "unevaluatedProperties": false,
+  "$defs": {
+    "rugix_benchmarks.benchmark.HttpProtocol": {
+      "$id": "rugix_benchmarks.benchmark.HttpProtocol",
+      "enum": [
+        {
+          "tag": "Http1"
+        },
+        {
+          "tag": "Http2"
+        }
+      ],
+      "description": "The actual HTTP protocol required by a candidate."
+    }
+  }
+}

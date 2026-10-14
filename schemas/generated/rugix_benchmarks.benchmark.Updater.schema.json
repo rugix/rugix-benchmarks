@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rugix_benchmarks.benchmark.Updater",
+  "description": "Native installer under measurement.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "const": "Rugix"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "chunker": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "tag",
+        "revision",
+        "chunker"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "const": "Rauc"
+        },
+        "version": {
+          "type": "string"
+        },
+        "compression_group_bytes": {
+          "type": "integer",
+          "format": "uint32"
+        },
+        "protocol": {
+          "$ref": "#/$defs/rugix_benchmarks.benchmark.HttpProtocol"
+        },
+        "tls": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "tag",
+        "version",
+        "compression_group_bytes",
+        "protocol",
+        "tls"
+      ]
+    }
+  ],
+  "$defs": {
+    "rugix_benchmarks.benchmark.HttpProtocol": {
+      "$id": "rugix_benchmarks.benchmark.HttpProtocol",
+      "enum": [
+        {
+          "tag": "Http1"
+        },
+        {
+          "tag": "Http2"
+        }
+      ],
+      "description": "The actual HTTP protocol required by a candidate."
+    }
+  }
+}

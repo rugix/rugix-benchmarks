@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "workloads": [
+    {
+      "id": "monthly",
+      "source": {
+        "id": "bookworm-202505",
+        "suite": "bookworm",
+        "snapshot": "20250511T024247Z"
+      },
+      "target": {
+        "id": "bookworm-202506",
+        "suite": "bookworm",
+        "snapshot": "20250611T033537Z"
+      }
+    },
+    {
+      "id": "annual",
+      "source": {
+        "id": "bookworm-202406",
+        "suite": "bookworm",
+        "snapshot": "20240611T023014Z"
+      },
+      "target": {
+        "id": "bookworm-202506",
+        "suite": "bookworm",
+        "snapshot": "20250611T033537Z"
+      }
+    },
+    {
+      "id": "major",
+      "source": {
+        "id": "bullseye-202505",
+        "suite": "bullseye",
+        "snapshot": "20250511T024247Z"
+      },
+      "target": {
+        "id": "bookworm-202506",
+        "suite": "bookworm",
+        "snapshot": "20250611T033537Z"
+      }
+    }
+  ],
+  "candidates": [
+    {
+      "id": "rugix-pipeline-casync16",
+      "updater": {
+        "tag": "Rugix",
+        "revision": "b82749ff34ee8668fb3e53322af039a083e8bf69",
+        "chunker": "casync-16"
+      }
+    },
+    {
+      "id": "rauc-http-32k",
+      "updater": {
+        "tag": "Rauc",
+        "version": "1.15.2",
+        "compression_group_bytes": 32768,
+        "protocol": {
+          "tag": "Http1"
+        },
+        "tls": false
+      }
+    }
+  ],
+  "rtt_ms": [
+    0
+  ],
+  "repetitions": 5,
+  "rate_bits_per_second": 167772160,
+  "memory_mib": 8192,
+  "vcpus": 4,
+  "order_seed": 20261013
+}
