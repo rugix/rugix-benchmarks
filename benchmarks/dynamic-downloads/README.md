@@ -1,100 +1,156 @@
-# Native Dynamic Delta Update Benchmarks
+# Dynamic Delta Update Performance
 
-These benchmarks measure installation time and actual network traffic for Rugix and RAUC using real bundles, disposable KVM guests, and Linux network shaping. The [methodology](methodology.md) describes preparation, cache controls, verification, and traffic accounting. The [byte simulations](../delta-updates/README.md) provide the theoretical download-size estimates used in the comparison.
+Dynamic delta updates reconstruct a new filesystem image by reusing data already available on a device and downloading the missing parts of an update bundle. This benchmark compares installation time and network traffic for Rugix Ctrl 1.3.0, a Rugix Ctrl build with concurrent HTTP fetching, and RAUC 1.15.2.
 
-## Findings
+For a monthly Debian Bookworm update at 40 ms of added round-trip delay, median installation times were **457.6 seconds with Rugix Ctrl 1.3.0**, **440.5 seconds with RAUC 1.15.2**, and **31.0 seconds with the concurrent fetcher**. These medians come from five installations per configuration on a 20 MiB/s link. At zero added delay, the measurements show no consistent speedup over Rugix Ctrl 1.3.0 across the three tested update pairs.
 
-At 40 ms added round-trip latency, the monthly pipeline install had a median of **31.0 seconds**, compared with **457.6 seconds** for Rugix v1.3.0. Its median paired speedup was **14.8×** across five repetitions.
+Read the [results](#results), [reproduce the measurements](#reproduce-the-measurements), or inspect the [measurement data](#data-and-provenance).
 
-At 10 ms RTT, monthly connection counts fell from 2750 to 4. The pipeline delivered 165.69 MiB of HTTP bodies and transferred 175.91 MiB across the link. RAUC HTTP/1.1 delivered 229.97 MiB and transferred 246.12 MiB.
+## Experiment
 
-RAUC's monthly HTTP/2 median at 40 ms RTT was 441.8 seconds; verified TLS HTTP/1.1 took 444.5 seconds. All protocol results remain in the tables, including repeated measurements at zero latency.
+Each workload installs the same 1411.27 MiB target filesystem image from a different source image:
 
-![Verified installation time](results/2026-10/installation-time.svg)
+| Workload | Source Image | Target Image |
+| --- | --- | --- |
+| Monthly | Debian Bookworm, May 2025 | Debian Bookworm, June 2025 |
+| Annual | Debian Bookworm, June 2024 | Debian Bookworm, June 2025 |
+| Major | Debian Bullseye, May 2025 | Debian Bookworm, June 2025 |
 
-Lines show medians, error bars show interquartile ranges, and faint dots show individual installs. Monthly pipeline times at 40 ms ranged from 24.2 to 65.0 seconds. All five verified results are retained.
+ARM64 filesystem images are installed as data by x86-64 installers in KVM guests. Each guest has four virtual CPUs, 8 GiB RAM, a blank target slot, prepared reuse indices, and warm caches. Nginx serves bundles over a private link limited to 20 MiB/s in each direction, with 0, 10, or 40 ms of added round-trip time (RTT).
 
-Download savings depend on bundle compression and access patterns. The complete Rugix and RAUC bundles are 330.52 and 362.00 MiB. A whole-image XZ stream is 258.25 MiB. The size figure retains that compression-only reference separately from native traffic.
+| Installer Label | Measured Version |
+| --- | --- |
+| Rugix Ctrl 1.3.0 | Release revision `48fc40d3d903730781f3dc4bf671873d2308573a` |
+| Rugix Ctrl concurrent fetcher | Prerelease revision `b82749ff34ee8668fb3e53322af039a083e8bf69` |
+| RAUC | 1.15.2 |
 
-For the major upgrade at 10 ms RTT, RAUC HTTP/1.1 delivered 414.72 MiB, 1.15 times its complete bundle size. Repeated and overlapping reads count each time. Complete-bundle sizes are byte references; full-download installation times were not measured.
+Both Rugix Ctrl builds use the same pinned compiler and plain HTTP/1.1. RAUC is measured with plain HTTP/1.1, TLS with HTTP/1.1, and TLS with HTTP/2. Five repetitions of every workload, latency, and installer configuration give 225 main measurements. Each speedup is an installation time with Rugix Ctrl 1.3.0 or RAUC divided by the time with the concurrent fetcher for the same repetition, workload, and latency. Reported speedups are medians of those five ratios.
 
-![Delivered bodies and complete interface traffic](results/2026-10/download-size.svg)
+Rugix Ctrl uses Casync content-defined chunking, which places chunk boundaries according to data content. Its nominal 64 KiB configuration is labeled **Casync64**, and each chunk is compressed individually with XZ. RAUC's `block-hash-index` adaptive update method reuses fixed 4 KiB blocks and retrieves missing data from 64 KiB XZ compression groups in a SquashFS bundle. A compression group contains blocks compressed together, so retrieving one block can require downloading adjacent data.
 
-The original 768-byte per-group model gives configuration-dependent errors. For the monthly Casync64 pipeline case, body and full-link factors are 0.968 and 1.028; RAUC 64 KiB factors are 1.283 and 1.373. Separate Casync16 and RAUC 32 KiB measurements support a [provisional calculator calibration](results/2026-10/calculator.md).
+Installation time covers the install command, including fetching, decompression, verification, reconstruction, writes, and index persistence. VM boot, fixture preparation, network calibration, cache warmup, independent final hashing, and reboot are excluded. Every recorded install passed a target-image hash check and reconciliation of packet captures with interface counters.
 
-The [Faster Delta Updates article](https://rugix.org/blog/faster-delta-updates) presents the design and interpretation. Its source lives in Rugix Docs.
+| Traffic Metric | Definition |
+| --- | --- |
+| Body | Delivered HTTP response-body bytes, including bundle metadata and repeated reads. |
+| Download | All server-to-client network-interface bytes, including protocol overhead. |
+| Total | Network-interface bytes in both directions, including requests, acknowledgments, and retransmissions. |
 
-## Measured Conditions
+The [methodology](methodology.md) specifies image construction, network shaping, timing, and verification.
 
-The comparison uses Rugix v1.3.0 at `48fc40d3d903730781f3dc4bf671873d2308573a`, the pipeline PR at `b82749ff34ee8668fb3e53322af039a083e8bf69`, and RAUC 1.15.2. Both Rugix revisions are built with the same pinned compiler. Every tool reconstructs the same 1411.27 MiB payload.
+## Results
 
-The main campaign contains 225 verified native installs: three workloads, three RTTs, five configurations, and five repetitions. A separate 30-install campaign measures the calculator's Casync16 and RAUC 32 KiB configurations. Earlier exploratory smokes and pilots are excluded.
+### Installation Time
 
-Each sample uses a fresh guest with four virtual CPUs, 8 GiB RAM, a blank target, prepared indices, and consistent warm caches. Nginx serves bundles over a private veth link. Receiver-side Linux TBF/netem applies 20 MiB/s in each direction and 0, 10, or 40 ms added RTT. The management OS is Debian Bookworm with kernel 6.1.0-35-amd64.
+At 40 ms added RTT, median speedups across the three workloads ranged from **14.8× to 30.6× over Rugix Ctrl 1.3.0** and **14.2× to 31.1× over RAUC**. Rugix Ctrl 1.3.0 and RAUC had similar median installation times under these conditions; the concurrent fetcher substantially improves on both.
 
-Timing covers the native install command, including fetching, decoding, verification, reconstruction, writes, and index persistence. It excludes boot, preparation, calibration, cache warmup, independent final hashing, and reboot. Actual RTT and throughput are checked before every install. Payload hashes, HTTP protocol, and exact packet/interface counter agreement are required for acceptance.
+The concurrent fetcher combines adjacent ranges, reuses connections, and keeps several requests in flight. For the monthly update at 10 ms added RTT, it used 4 connections, compared with 2750 for Rugix Ctrl 1.3.0.
 
-## Monthly Update
+![Installation time by workload and added round-trip time](results/2026-10/installation-time.svg)
+
+Lines show medians, error bars cover the middle 50% of measurements, and dots show individual installs. Monthly times with the concurrent fetcher at 40 ms ranged from 24.2 to 65.0 seconds.
+
+### Network Traffic
+
+For the monthly update at 10 ms added RTT, the concurrent fetcher transferred **175.91 MiB** in both directions, compared with **246.12 MiB** for RAUC over HTTP/1.1, a reduction of **28.5%**. Their delivered response bodies were 165.69 and 229.97 MiB, respectively.
+
+![Delivered HTTP bodies and bidirectional interface traffic at 10 ms added RTT](results/2026-10/download-size.svg)
+
+Bundle compression and access patterns affect the savings. The complete Rugix Ctrl and RAUC bundles are 330.52 and 362.00 MiB; compressing the target as a single XZ stream produces 258.25 MiB, shown as a size reference in the figure. Full-download installation times were not measured.
+
+For the major upgrade, RAUC delivered 414.72 MiB of response bodies at 10 ms added RTT, or 1.15 times its bundle size. Response-body counts include repeated and overlapping reads.
+
+### Accuracy of Download Size Estimates
+
+The [byte simulations](../delta-updates/README.md) estimate compressed data and indices with 768 bytes of transfer overhead per downloaded compression group. A correction factor divides measured bytes by that estimate: values above one indicate an underestimate, and values below one indicate an overestimate.
+
+For the monthly Casync64 update, the concurrent fetcher's body and total-traffic factors are 0.968 and 1.028. RAUC's corresponding factors with 64 KiB compression groups are 1.283 and 1.373.
+
+A separate 30-install calibration measures the same Rugix Ctrl concurrent fetcher with nominal 16 KiB chunks (**Casync16**) and RAUC 1.15.2 with 32 KiB compression groups. Both use plain HTTP/1.1. The [calibration report](results/2026-10/calculator.md) provides factors for the savings calculator's models and explains their applicability.
+
+## Reproduce the Measurements
+
+Use x86-64 Linux with writable `/dev/kvm`, Nix with flakes enabled, and Podman. Allow at least 12 GiB of free RAM and about 150 GiB of disk space for images, builds, and captures. Run one campaign at a time on an otherwise idle host.
+
+From `benchmarks/dynamic-downloads`, prepare the inputs, check the installers, run both measurement plans, and generate the report:
+
+```sh
+nix develop path:./nix
+uv sync --locked
+uv run --locked benchmark prepare
+uv run --locked benchmark smoke
+uv run --locked benchmark run --plan plans/paper.json --output .cache/paper
+uv run --locked benchmark run --plan plans/calculator.json --output .cache/calculator
+uv run --locked benchmark report
+```
+
+A successful report confirms 225 main and 30 calibration installs and writes results to `results/2026-10/`. It regenerates this README, measurement tables, figures, and the calibration report. See [Run Management](methodology.md#run-management) for resuming interrupted campaigns and handling failed runs.
+
+## Detailed Results
+
+Installation times are medians with first and third quartiles in brackets. Traffic tables show medians of five measurements per condition.
+
+### Monthly Update
 
 | Installer | 0 ms, s | 10 ms, s | 40 ms, s |
 | --- | ---: | ---: | ---: |
-| Rugix v1.3.0 | 16.4 [15.8, 17.9] | 134.8 [131.3, 135.1] | 457.6 [457.4, 458.0] |
-| Rugix pipeline PR | 18.8 [16.4, 21.5] | 18.8 [17.3, 23.5] | 31.0 [27.2, 40.5] |
+| Rugix Ctrl 1.3.0 | 16.4 [15.8, 17.9] | 134.8 [131.3, 135.1] | 457.6 [457.4, 458.0] |
+| Rugix Ctrl concurrent fetcher | 18.8 [16.4, 21.5] | 18.8 [17.3, 23.5] | 31.0 [27.2, 40.5] |
 | RAUC HTTP/1.1 | 24.9 [23.7, 26.0] | 134.6 [132.6, 138.2] | 440.5 [440.0, 441.0] |
 | RAUC TLS HTTP/1.1 | 28.2 [27.8, 29.5] | 138.9 [133.4, 142.9] | 444.5 [441.6, 448.0] |
 | RAUC TLS HTTP/2 | 24.9 [24.7, 26.3] | 138.8 [136.4, 140.9] | 441.8 [436.9, 442.7] |
 
-Times are medians with the interquartile range in brackets, from five installs per cell.
+Columns show added round-trip time in milliseconds. Installation times are seconds, shown as median [first quartile, third quartile] from five installs.
 
-## Annual Update
+### Annual Update
 
 | Installer | 0 ms, s | 10 ms, s | 40 ms, s |
 | --- | ---: | ---: | ---: |
-| Rugix v1.3.0 | 18.3 [18.2, 18.5] | 160.9 [160.9, 166.1] | 566.2 [565.7, 567.5] |
-| Rugix pipeline PR | 19.3 [18.1, 19.9] | 18.6 [17.5, 19.2] | 24.2 [23.8, 25.2] |
+| Rugix Ctrl 1.3.0 | 18.3 [18.2, 18.5] | 160.9 [160.9, 166.1] | 566.2 [565.7, 567.5] |
+| Rugix Ctrl concurrent fetcher | 19.3 [18.1, 19.9] | 18.6 [17.5, 19.2] | 24.2 [23.8, 25.2] |
 | RAUC HTTP/1.1 | 31.0 [30.2, 32.5] | 175.4 [167.7, 177.9] | 570.0 [569.9, 573.0] |
 | RAUC TLS HTTP/1.1 | 31.3 [29.9, 33.5] | 179.4 [175.4, 179.9] | 575.9 [573.0, 590.1] |
 | RAUC TLS HTTP/2 | 29.6 [28.7, 32.2] | 176.1 [175.8, 182.2] | 574.1 [572.5, 576.1] |
 
-Times are medians with the interquartile range in brackets, from five installs per cell.
+Columns show added round-trip time in milliseconds. Installation times are seconds, shown as median [first quartile, third quartile] from five installs.
 
-## Major Update
+### Major Update
 
 | Installer | 0 ms, s | 10 ms, s | 40 ms, s |
 | --- | ---: | ---: | ---: |
-| Rugix v1.3.0 | 23.2 [22.4, 24.5] | 219.3 [219.2, 219.7] | 805.9 [805.6, 806.0] |
-| Rugix pipeline PR | 23.2 [22.1, 24.5] | 23.0 [22.1, 23.0] | 26.4 [26.2, 26.4] |
+| Rugix Ctrl 1.3.0 | 23.2 [22.4, 24.5] | 219.3 [219.2, 219.7] | 805.9 [805.6, 806.0] |
+| Rugix Ctrl concurrent fetcher | 23.2 [22.1, 24.5] | 23.0 [22.1, 23.0] | 26.4 [26.2, 26.4] |
 | RAUC HTTP/1.1 | 36.0 [33.1, 52.7] | 246.0 [242.0, 248.9] | 821.1 [821.0, 822.7] |
 | RAUC TLS HTTP/1.1 | 36.0 [35.8, 37.7] | 246.6 [246.4, 251.5] | 821.8 [819.9, 822.5] |
 | RAUC TLS HTTP/2 | 37.1 [34.9, 38.6] | 249.6 [244.6, 252.1] | 821.3 [818.0, 822.1] |
 
-Times are medians with the interquartile range in brackets, from five installs per cell.
+Columns show added round-trip time in milliseconds. Installation times are seconds, shown as median [first quartile, third quartile] from five installs.
 
-## Download Size and Traffic
+### Download Size and Traffic
 
-The table uses 10 ms RTT and five repetitions. Body bytes count delivered HTTP response bodies. Link traffic includes both directions, including headers, acknowledgments and retransmissions.
+Values are medians of five installs at 10 ms added RTT. Body counts delivered HTTP response-body bytes; Link Download counts server-to-client interface bytes; Link Total includes interface traffic in both directions.
 
 | Update | Installer | Body, MiB | Link Download, MiB | Link Total, MiB | Requests | Connections |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Monthly | Rugix v1.3.0 | 180.66 | 190.36 | 197.09 | 2750 | 2750 |
-| Monthly | Rugix pipeline PR | 165.69 | 173.65 | 175.91 | 931 | 4 |
+| Monthly | Rugix Ctrl 1.3.0 | 180.66 | 190.36 | 197.09 | 2750 | 2750 |
+| Monthly | Rugix Ctrl concurrent fetcher | 165.69 | 173.65 | 175.91 | 931 | 4 |
 | Monthly | RAUC HTTP/1.1 | 229.97 | 243.78 | 246.12 | 9932 | 16 |
 | Monthly | RAUC TLS HTTP/1.1 | 229.97 | 244.81 | 247.40 | 9932 | 15 |
 | Monthly | RAUC TLS HTTP/2 | 229.97 | 244.19 | 247.32 | 9932 | 1 |
-| Annual | Rugix v1.3.0 | 224.50 | 236.55 | 244.96 | 3429 | 3429 |
-| Annual | Rugix pipeline PR | 209.08 | 219.07 | 222.28 | 963 | 4 |
+| Annual | Rugix Ctrl 1.3.0 | 224.50 | 236.55 | 244.96 | 3429 | 3429 |
+| Annual | Rugix Ctrl concurrent fetcher | 209.08 | 219.07 | 222.28 | 963 | 4 |
 | Annual | RAUC HTTP/1.1 | 285.36 | 302.69 | 305.70 | 12933 | 16 |
 | Annual | RAUC TLS HTTP/1.1 | 285.36 | 303.93 | 307.27 | 12933 | 15 |
 | Annual | RAUC TLS HTTP/2 | 285.36 | 303.11 | 307.17 | 12933 | 1 |
-| Major | Rugix v1.3.0 | 314.67 | 331.59 | 343.49 | 4832 | 4832 |
-| Major | Rugix pipeline PR | 311.34 | 325.88 | 331.13 | 479 | 4 |
+| Major | Rugix Ctrl 1.3.0 | 314.67 | 331.59 | 343.49 | 4832 | 4832 |
+| Major | Rugix Ctrl concurrent fetcher | 311.34 | 325.88 | 331.13 | 479 | 4 |
 | Major | RAUC HTTP/1.1 | 414.72 | 439.89 | 444.20 | 18723 | 16 |
 | Major | RAUC TLS HTTP/1.1 | 414.72 | 441.65 | 446.43 | 18723 | 16 |
 | Major | RAUC TLS HTTP/2 | 414.72 | 440.49 | 446.33 | 18723 | 1 |
 
-## Pipeline Speedup
+### Rugix Ctrl Speedup
 
-Each ratio pairs a release and pipeline install from the same repetition, workload and RTT.
+Each speedup is the Rugix Ctrl 1.3.0 time divided by the concurrent fetcher time for the same repetition, workload, and added RTT. The table gives the median and full range of five paired ratios.
 
 | Update | RTT | Median Speedup | Paired Range |
 | --- | ---: | ---: | ---: |
@@ -108,37 +164,37 @@ Each ratio pairs a release and pipeline install from the same repetition, worklo
 | Major | 10 ms | 9.67× | 9.20–10.05× |
 | Major | 40 ms | 30.58× | 26.19–35.21× |
 
-## Theory and Measured Overhead
+### Theory and Measured Overhead
 
-The original model includes 768 bytes per downloaded compression group. Its compressed result is compared directly with native delivered bytes and complete link traffic.
+The model estimates compressed data and index bytes plus 768 bytes per downloaded compression group. Each factor is measured bytes divided by modeled bytes: values above one indicate an underestimate. Main configurations use five installs at 10 ms added RTT; Casync16 and RAUC 32 KiB use five installs at zero added RTT.
 
 | Update | Installer | Model, MiB | Body / Model | Download / Model | Total / Model |
 | --- | --- | ---: | ---: | ---: | ---: |
-| Monthly | Rugix v1.3.0 | 171.09 | 1.056 | 1.113 | 1.152 |
-| Monthly | Rugix pipeline PR | 171.09 | 0.968 | 1.015 | 1.028 |
+| Monthly | Rugix Ctrl 1.3.0 | 171.09 | 1.056 | 1.113 | 1.152 |
+| Monthly | Rugix Ctrl concurrent fetcher | 171.09 | 0.968 | 1.015 | 1.028 |
 | Monthly | RAUC HTTP/1.1 | 179.27 | 1.283 | 1.360 | 1.373 |
 | Monthly | RAUC TLS HTTP/1.1 | 179.27 | 1.283 | 1.366 | 1.380 |
 | Monthly | RAUC TLS HTTP/2 | 179.27 | 1.283 | 1.362 | 1.380 |
-| Annual | Rugix v1.3.0 | 216.49 | 1.037 | 1.093 | 1.131 |
-| Annual | Rugix pipeline PR | 216.49 | 0.966 | 1.012 | 1.027 |
+| Annual | Rugix Ctrl 1.3.0 | 216.49 | 1.037 | 1.093 | 1.131 |
+| Annual | Rugix Ctrl concurrent fetcher | 216.49 | 0.966 | 1.012 | 1.027 |
 | Annual | RAUC HTTP/1.1 | 222.46 | 1.283 | 1.361 | 1.374 |
 | Annual | RAUC TLS HTTP/1.1 | 222.46 | 1.283 | 1.366 | 1.381 |
 | Annual | RAUC TLS HTTP/2 | 222.46 | 1.283 | 1.363 | 1.381 |
-| Major | Rugix v1.3.0 | 322.76 | 0.975 | 1.027 | 1.064 |
-| Major | Rugix pipeline PR | 322.76 | 0.965 | 1.010 | 1.026 |
+| Major | Rugix Ctrl 1.3.0 | 322.76 | 0.975 | 1.027 | 1.064 |
+| Major | Rugix Ctrl concurrent fetcher | 322.76 | 0.965 | 1.010 | 1.026 |
 | Major | RAUC HTTP/1.1 | 335.64 | 1.236 | 1.311 | 1.323 |
 | Major | RAUC TLS HTTP/1.1 | 335.64 | 1.236 | 1.316 | 1.330 |
 | Major | RAUC TLS HTTP/2 | 335.64 | 1.236 | 1.312 | 1.330 |
-| Monthly | Rugix Casync16 | 170.14 | 0.895 | 0.942 | 0.956 |
+| Monthly | Rugix Ctrl Casync16 | 170.14 | 0.895 | 0.942 | 0.956 |
 | Monthly | RAUC 32 KiB | 180.23 | 1.453 | 1.553 | 1.579 |
-| Annual | Rugix Casync16 | 221.49 | 0.887 | 0.932 | 0.945 |
+| Annual | Rugix Ctrl Casync16 | 221.49 | 0.887 | 0.932 | 0.945 |
 | Annual | RAUC 32 KiB | 226.11 | 1.436 | 1.537 | 1.563 |
-| Major | Rugix Casync16 | 369.67 | 0.883 | 0.924 | 0.939 |
+| Major | Rugix Ctrl Casync16 | 369.67 | 0.883 | 0.924 | 0.939 |
 | Major | RAUC 32 KiB | 356.86 | 1.385 | 1.482 | 1.507 |
 
-## RAUC Block Reuse
+### RAUC Block Reuse
 
-Independent 4 KiB matching must agree with every native RAUC install, including zero blocks and reuse from the already written target prefix.
+Logical Reuse is the fraction of target 4 KiB blocks supplied by source blocks, zero data, or data already written to the target. Missing Raw Data counts the remaining blocks before compression. For every checked install, RAUC reuse counters matched an independent block comparison.
 
 | Update | Logical Reuse | Missing Raw Data, MiB | Checked Installs |
 | --- | ---: | ---: | ---: |
@@ -146,44 +202,24 @@ Independent 4 KiB matching must agree with every native RAUC install, including 
 | Annual | 58.4% | 587.56 | 50 |
 | Major | 27.9% | 1017.69 | 50 |
 
-## Raw Data and Provenance
+## Data and Provenance
 
-- [Every accepted sample, CSV](results/2026-10/samples.csv)
-- [Main sample records](results/2026-10/paper-samples.json) and [plan](results/2026-10/paper-plan.json)
-- [Calculator samples](results/2026-10/calculator-samples.json) and [plan](results/2026-10/calculator-plan.json)
-- [Main provenance](results/2026-10/paper-provenance.json) and [calculator provenance](results/2026-10/calculator-provenance.json)
-- [Per-workload correction factors](results/2026-10/corrections.json) and [independently checked RAUC reuse](results/2026-10/reuse.json)
-- [Theoretical estimates](results/2026-10/theory) and [timing summaries](results/2026-10/summary.json)
+| Data | Contents |
+| --- | --- |
+| [Samples, CSV](results/2026-10/samples.csv) | All 255 recorded installations. |
+| [Main samples](results/2026-10/paper-samples.json) and [plan](results/2026-10/paper-plan.json) | Installation-time and traffic measurements for the five main configurations. |
+| [Calibration samples](results/2026-10/calculator-samples.json) and [plan](results/2026-10/calculator-plan.json) | Casync16 and RAUC 32 KiB measurements. |
+| [Main provenance](results/2026-10/paper-provenance.json) and [calibration provenance](results/2026-10/calculator-provenance.json) | Input identities, software versions, hashes, and recorded environment. |
+| [Correction factors](results/2026-10/corrections.json) | Measured-to-modeled byte ratios. |
+| [RAUC reuse](results/2026-10/reuse.json) | Independently checked block-reuse counts. |
+| [Theoretical estimates](results/2026-10/theory/) | Compressed sizes from the byte models. |
+| [Timing summaries](results/2026-10/summary.json) and [tables](results/2026-10/tables.md) | Timing statistics and complete result tables. |
 
-Packet captures and full native logs remain in the local campaign cache. Plans, samples, correction factors, and reuse statistics have [data schemas](schemas/benchmark.sidex). Figures are available as SVG, PDF, and PNG beside the sample data.
-
-## Reproduce
-
-Use x86-64 Linux with writable `/dev/kvm`, Nix, and Podman. See the [methodology](methodology.md) for cache controls, timing boundaries, traffic accounting, and resource requirements. Run these commands from `benchmarks/dynamic-downloads`:
-
-```sh
-nix develop path:./nix
-uv sync --locked
-uv run --locked benchmark prepare
-uv run --locked benchmark smoke
-uv run --locked benchmark run --plan plans/paper.json --output .cache/paper
-uv run --locked benchmark run --plan plans/calculator.json --output .cache/calculator
-uv run --locked benchmark report
-```
-
-Successful results resume with immutable input checks. Failed evidence is retained. The reporting command regenerates the benchmark README, tables, figures, calculator proposal, and `results/2026-10/article-data.json` from complete campaigns. Prose templates are in `src/rugix_benchmarks/templates`.
-
-The article is maintained in Rugix Docs. To refresh its interactive graphs in an adjacent checkout:
-
-```sh
-cp results/2026-10/article-data.json ../../../rugix-docs/src/components/native-delta-data.json
-```
+Packet captures and installer logs are written to each local campaign's `runs/` directory. The figures are available as SVG, PDF, and PNG in `results/2026-10/`; [Sidex definitions](schemas/benchmark.sidex) describe the machine-readable records.
 
 ## Scope
 
-Selected ARM64 filesystems are installed as data in a native x86-64 VM and are not booted. Blank targets keep the comparison aligned with the simulator's single source image; they exclude recovery from a partial install and extra reuse from another older slot. These measurements describe this VM, kernel, network, and selected corpus.
-
-Five repetitions quantify variation within one image pair. They do not create five independent workloads. The calculator calibration covers two Bookworm minor-update pairs and one Bullseye-to-Bookworm upgrade; it does not replace the original two-year corpus. The calculator remains unchanged pending calibration review.
+The measurements cover three image pairs on the specified VM, kernel, network, and warm-cache setup. Each target starts blank, so partial-install recovery is outside the measured workload. Five repetitions characterize variation within each image pair; the calibration covers two Bookworm minor updates and one Bullseye-to-Bookworm upgrade.
 
 ## License
 

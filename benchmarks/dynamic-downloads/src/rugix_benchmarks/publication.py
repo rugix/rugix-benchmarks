@@ -11,7 +11,12 @@ def render(plan, groups, corrections, tables, labels):
     """Keep README tables and calculator factors synchronized."""
     monthly = lambda candidate, rtt: groups["monthly", candidate, rtt]
     median = lambda candidate, rtt, field: statistics.median(row[field] for row in monthly(candidate, rtt))
-    speedups = _paired(groups, "monthly", 40, "rugix-release", "rugix-pipeline")
+    speedups40 = [statistics.median(_paired(groups, workload.id, 40, "rugix-release", "rugix-pipeline"))
+                  for workload in plan.workloads]
+    rauc_speedups40 = [statistics.median(_paired(groups, workload.id, 40, "rauc-http", "rugix-pipeline"))
+                       for workload in plan.workloads]
+    monthly_total = statistics.median(row["download_bytes"] + row["upload_bytes"] for row in monthly("rugix-pipeline", 10))
+    monthly_rauc_total = statistics.median(row["download_bytes"] + row["upload_bytes"] for row in monthly("rauc-http", 10))
     correction = {(row["candidate"], row["workload"]): row for row in corrections}
     rugix = correction["rugix-pipeline-casync16", "minor-pooled"]
     rauc = correction["rauc-http-32k", "minor-pooled"]
@@ -28,21 +33,22 @@ def render(plan, groups, corrections, tables, labels):
         if row["candidate"] in ("rugix-pipeline-casync16", "rauc-http-32k") and row["workload"] != "minor-pooled":
             calibration_table.append(f"| {row['workload'].title()} | {labels[row['candidate']]} | {row['model_bytes'] / 1024**2:.2f} | {row['body_factor']:.3f} | {row['download_factor']:.3f} | {row['total_factor']:.3f} |")
     context = dict(
-        tables="\n".join(tables),
+        tables="\n".join(tables).replace("## ", "### "),
         calibration_table="\n".join(calibration_table),
         monthly_new40=median("rugix-pipeline", 40, "seconds"),
         monthly_new40_min=min(row["seconds"] for row in monthly("rugix-pipeline", 40)),
         monthly_new40_max=max(row["seconds"] for row in monthly("rugix-pipeline", 40)),
         monthly_old40=median("rugix-release", 40, "seconds"),
-        monthly_speedup40=statistics.median(speedups),
+        monthly_rauc40=median("rauc-http", 40, "seconds"),
+        speedup40_low=min(speedups40), speedup40_high=max(speedups40),
+        rauc_speedup40_low=min(rauc_speedups40), rauc_speedup40_high=max(rauc_speedups40),
+        monthly_traffic_reduction_pct=100 * (1 - monthly_total / monthly_rauc_total),
         monthly_old_connections=median("rugix-release", 10, "connections"),
         monthly_new_connections=median("rugix-pipeline", 10, "connections"),
-        monthly_rauc_h2_40=median("rauc-tls-h2", 40, "seconds"),
-        monthly_rauc_h1_40=median("rauc-tls-h1", 40, "seconds"),
         monthly_body_mib=median("rugix-pipeline", 10, "body_bytes") / 1024**2,
-        monthly_total_mib=statistics.median(row["download_bytes"] + row["upload_bytes"] for row in monthly("rugix-pipeline", 10)) / 1024**2,
+        monthly_total_mib=monthly_total / 1024**2,
         monthly_rauc_body_mib=median("rauc-http", 10, "body_bytes") / 1024**2,
-        monthly_rauc_total_mib=statistics.median(row["download_bytes"] + row["upload_bytes"] for row in monthly("rauc-http", 10)) / 1024**2,
+        monthly_rauc_total_mib=monthly_rauc_total / 1024**2,
         rugix_bundle_mib=median("rugix-pipeline", 10, "bundle_bytes") / 1024**2,
         rauc_bundle_mib=median("rauc-http", 10, "bundle_bytes") / 1024**2,
         major_rauc_body_mib=major_rauc_body / 1024**2,

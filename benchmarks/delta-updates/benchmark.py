@@ -393,8 +393,7 @@ class DeltarStrategy:
 
 DELTAR_STRATEGIES = [
     DeltarStrategy("casync-16", 768, 32 * 1024),
-    # We use 4GiB blocks, i.e., files are never split and a group limit
-    # of 1, i.e., each file gets its own download group.
+    # A 1-byte threshold gives each unique chunk its own download group.
     DeltarStrategy("fixed-4096", 0, 1),
     DeltarStrategy("fixed-4096", 48, 16 * 1024),
 ]

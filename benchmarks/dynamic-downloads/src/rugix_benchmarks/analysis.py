@@ -18,12 +18,12 @@ plt.switch_backend("Agg")
 
 MIB = 1024**2
 LABELS = {
-    "rugix-release": "Rugix v1.3.0",
-    "rugix-pipeline": "Rugix pipeline PR",
+    "rugix-release": "Rugix Ctrl 1.3.0",
+    "rugix-pipeline": "Rugix Ctrl concurrent fetcher",
     "rauc-http": "RAUC HTTP/1.1",
     "rauc-tls-h1": "RAUC TLS HTTP/1.1",
     "rauc-tls-h2": "RAUC TLS HTTP/2",
-    "rugix-pipeline-casync16": "Rugix Casync16",
+    "rugix-pipeline-casync16": "Rugix Ctrl Casync16",
     "rauc-http-32k": "RAUC 32 KiB",
 }
 
@@ -50,9 +50,9 @@ def report(paper: Path, calibration: Path):
         for candidate in paper_plan.candidates:
             values = [_time_cell(groups[workload.id, candidate.id, rtt]) for rtt in paper_plan.rtt_ms]
             tables.append("| " + LABELS[candidate.id] + " | " + " | ".join(values) + " |")
-        tables += ["", "Times are medians with the interquartile range in brackets, from five installs per cell.", ""]
+        tables += ["", "Columns show added round-trip time in milliseconds. Installation times are seconds, shown as median [first quartile, third quartile] from five installs.", ""]
     tables += ["## Download Size and Traffic", "",
-               "The table uses 10 ms RTT and five repetitions. Body bytes count delivered HTTP response bodies. Link traffic includes both directions, including headers, acknowledgments and retransmissions.", "",
+               "Values are medians of five installs at 10 ms added RTT. Body counts delivered HTTP response-body bytes; Link Download counts server-to-client interface bytes; Link Total includes interface traffic in both directions.", "",
                "| Update | Installer | Body, MiB | Link Download, MiB | Link Total, MiB | Requests | Connections |",
                "| --- | --- | ---: | ---: | ---: | ---: | ---: |"]
     for workload in paper_plan.workloads:
@@ -61,8 +61,8 @@ def report(paper: Path, calibration: Path):
             values = [_median(rows, field) / MIB for field in ("body_bytes", "download_bytes")]
             total = statistics.median(row["download_bytes"] + row["upload_bytes"] for row in rows) / MIB
             tables.append(f"| {workload.id.title()} | {LABELS[candidate.id]} | {values[0]:.2f} | {values[1]:.2f} | {total:.2f} | {_median(rows, 'requests'):.0f} | {_median(rows, 'connections'):.0f} |")
-    tables += ["", "## Pipeline Speedup", "",
-               "Each ratio pairs a release and pipeline install from the same repetition, workload and RTT.", "",
+    tables += ["", "## Rugix Ctrl Speedup", "",
+               "Each speedup is the Rugix Ctrl 1.3.0 time divided by the concurrent fetcher time for the same repetition, workload, and added RTT. The table gives the median and full range of five paired ratios.", "",
                "| Update | RTT | Median Speedup | Paired Range |",
                "| --- | ---: | ---: | ---: |"]
     for workload in paper_plan.workloads:
@@ -72,7 +72,7 @@ def report(paper: Path, calibration: Path):
             ratios = [old[rep] / new[rep] for rep in old]
             tables.append(f"| {workload.id.title()} | {rtt} ms | {statistics.median(ratios):.2f}× | {min(ratios):.2f}–{max(ratios):.2f}× |")
     tables += ["", "## Theory and Measured Overhead", "",
-               "The original model includes 768 bytes per downloaded compression group. Its compressed result is compared directly with native delivered bytes and complete link traffic.", "",
+               "The model estimates compressed data and index bytes plus 768 bytes per downloaded compression group. Each factor is measured bytes divided by modeled bytes: values above one indicate an underestimate. Main configurations use five installs at 10 ms added RTT; Casync16 and RAUC 32 KiB use five installs at zero added RTT.", "",
                "| Update | Installer | Model, MiB | Body / Model | Download / Model | Total / Model |",
                "| --- | --- | ---: | ---: | ---: | ---: |"]
     corrections = []
@@ -104,7 +104,7 @@ def report(paper: Path, calibration: Path):
     reuse = validate_reuse(combined, samples)
     save_json(output / "reuse.json", [item.model_dump(by_alias=True) for item in reuse])
     tables += ["", "## RAUC Block Reuse", "",
-               "Independent 4 KiB matching must agree with every native RAUC install, including zero blocks and reuse from the already written target prefix.", "",
+               "Logical Reuse is the fraction of target 4 KiB blocks supplied by source blocks, zero data, or data already written to the target. Missing Raw Data counts the remaining blocks before compression. For every checked install, RAUC reuse counters matched an independent block comparison.", "",
                "| Update | Logical Reuse | Missing Raw Data, MiB | Checked Installs |",
                "| --- | ---: | ---: | ---: |"]
     for item in reuse:
@@ -239,7 +239,7 @@ def _traffic_plot(plan, groups, output):
     for axis in axes:
         axis.grid(axis="y", alpha=.2)
         axis.set_axisbelow(True)
-    figure.suptitle("Native traffic at 10 ms RTT, median of five installs")
+    figure.suptitle("Interface traffic at 10 ms added RTT, medians of five installs")
     figure.tight_layout()
     for suffix in ("svg", "pdf", "png"):
         figure.savefig(output / ("download-size." + suffix), dpi=200)
