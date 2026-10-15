@@ -2,7 +2,7 @@
 
 This is the original delta-update benchmark suite, migrated from `rugix/rugix`. It builds ARM64 Debian Bookworm and Bullseye images at monthly snapshots from June 2023 through June 2025, then estimates download sizes for monthly, quarterly, half-yearly, annual, and Bullseye-to-Bookworm updates.
 
-The suite compares complete-image XZ compression, static xdelta3 patches, fixed-size block reuse, Casync content-defined block reuse, and the experimental deltar approach. Block simulations include compressed indices and a configurable per-group overhead allowance. They estimate bytes and do not measure HTTP requests or native installation time. The [native adaptive-update suite](../adaptive-downloads/README.md) validates selected pairs with actual Rugix and RAUC installs.
+The suite compares complete-image XZ compression, static xdelta3 patches, fixed-size block reuse, Casync content-defined block reuse, and the experimental deltar approach. Block simulations include compressed indices and a configurable per-group overhead allowance. They estimate bytes and do not measure HTTP requests or native installation time. The [native dynamic delta update benchmark](../dynamic-downloads/README.md) validates selected pairs with actual Rugix and RAUC installs.
 
 ## Run the Original Suite
 

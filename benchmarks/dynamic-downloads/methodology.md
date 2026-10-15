@@ -1,4 +1,4 @@
-# Native Adaptive-Update Methodology
+# Native Dynamic Delta Update Methodology
 
 These benchmarks install real Rugix and RAUC bundles into disposable KVM virtual machines. Linux traffic control applies bandwidth and packet delay on a private link inside each guest. Nginx serves bundles without application-level delays or simulated request costs. See the [benchmark results](README.md) for the repeated measurements and findings.
 
@@ -6,7 +6,7 @@ These benchmarks install real Rugix and RAUC bundles into disposable KVM virtual
 
 Use an x86-64 Linux machine with writable `/dev/kvm`, Nix with flakes enabled, and Podman. Allow at least 12 GiB of free RAM and about 150 GiB of disk space for images, fixtures, packet captures, and native build dependencies. Run one campaign at a time on an otherwise idle host.
 
-Run from `benchmarks/adaptive-downloads`. All Python dependencies, recipes, fixtures, plans, and reporting code are local to this experiment. The generated Python data models are included, so reproducing the experiment does not require Sidex tooling:
+Run from `benchmarks/dynamic-downloads`. All Python dependencies, recipes, fixtures, plans, and reporting code are local to this experiment. The generated Python data models are included, so reproducing the experiment does not require Sidex tooling:
 
 ```sh
 nix develop path:./nix
@@ -32,7 +32,7 @@ uv run --locked benchmark run --plan plans/paper.json --output .cache/paper --li
 
 ## Corpus and Native Installers
 
-Adaptive updates reconstruct a target filesystem by reusing matching data from an existing filesystem and fetching missing data from a complete bundle. The source corpus is the same ARM64 Debian corpus used by the original delta-update simulations. ARM64 filesystems are installed as opaque payloads in an x86-64 native updater VM. They are not booted.
+Dynamic delta updates reconstruct a target filesystem by reusing matching data from an existing filesystem and fetching missing data from a complete bundle. The source corpus is the same ARM64 Debian corpus used by the original delta-update simulations. ARM64 filesystems are installed as opaque payloads in an x86-64 native updater VM. They are not booted.
 
 | Workload | Source | Target |
 | --- | --- | --- |

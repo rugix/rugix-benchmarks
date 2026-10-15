@@ -3,27 +3,6 @@ revision = 3
 requires-python = ">=3.12"
 
 [[package]]
-name = "adaptive-download-benchmark"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "click" },
-    { name = "h11" },
-    { name = "matplotlib" },
-    { name = "pydantic" },
-    { name = "rugix-testkit" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "click", specifier = ">=8.1,<9" },
-    { name = "h11", specifier = ">=0.16,<0.17" },
-    { name = "matplotlib", specifier = ">=3.8,<4" },
-    { name = "pydantic", specifier = ">=2.5,<3" },
-    { name = "rugix-testkit", git = "https://github.com/rugix/rugix-testkit.git?rev=5d871530eb0733257815d813dc76b586753dbfc5" },
-]
-
-[[package]]
 name = "annotated-types"
 version = "0.8.0"
 source = { registry = "https://pypi.org/simple" }
@@ -363,6 +342,27 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f7/9c/16649913bf14c73e0a9453782e148362ff2657067deff6aa9c7ebcddcc31/deprecated-3.0.0.tar.gz", hash = "sha256:16850204d3a1e6bb0acd06bff48d96e8b0a0d25d1c52f71705405a0f4894192d", size = 166912, upload-time = "2026-09-26T13:58:10.675Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/83/ae/676feae8e4644a6d7169951a97f61c56f416c73f67bf1761f2461d75cc81/deprecated-3.0.0-py3-none-any.whl", hash = "sha256:58204cf4a7f6270d547af5c278ee7a6bb56045a4b3d8441a1cd11660f41b7939", size = 21912, upload-time = "2026-09-26T13:58:09.458Z" },
+]
+
+[[package]]
+name = "dynamic-download-benchmark"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "click" },
+    { name = "h11" },
+    { name = "matplotlib" },
+    { name = "pydantic" },
+    { name = "rugix-testkit" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "click", specifier = ">=8.1,<9" },
+    { name = "h11", specifier = ">=0.16,<0.17" },
+    { name = "matplotlib", specifier = ">=3.8,<4" },
+    { name = "pydantic", specifier = ">=2.5,<3" },
+    { name = "rugix-testkit", git = "https://github.com/rugix/rugix-testkit.git?rev=5d871530eb0733257815d813dc76b586753dbfc5" },
 ]
 
 [[package]]

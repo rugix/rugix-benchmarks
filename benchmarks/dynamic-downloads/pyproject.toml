@@ -1,7 +1,7 @@
 [project]
-name = "adaptive-download-benchmark"
+name = "dynamic-download-benchmark"
 version = "0.1.0"
-description = "Reproduce adaptive-update installation times and network traffic"
+description = "Reproduce dynamic delta update installation times and network traffic"
 requires-python = ">=3.12"
 dependencies = [
   "click>=8.1,<9",

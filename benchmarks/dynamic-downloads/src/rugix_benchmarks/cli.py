@@ -13,7 +13,7 @@ from .vm import build_native_image
 
 @click.group()
 def main():
-    """Reproduce the adaptive-update installation experiment."""
+    """Reproduce the dynamic delta update installation experiment."""
     logging.basicConfig(level=logging.INFO,format="%(asctime)s %(levelname)s %(message)s")
 
 @main.command("tools")

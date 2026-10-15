@@ -1,4 +1,4 @@
-# Native Adaptive-Update Benchmarks
+# Native Dynamic Delta Update Benchmarks
 
 These benchmarks measure installation time and actual network traffic for Rugix and RAUC using real bundles, disposable KVM guests, and Linux network shaping. The [methodology](methodology.md) describes preparation, cache controls, verification, and traffic accounting. The [byte simulations](../delta-updates/README.md) provide the theoretical download-size estimates used in the comparison.
 
@@ -159,7 +159,7 @@ Packet captures and full native logs remain in the local campaign cache. Plans, 
 
 ## Reproduce
 
-Use x86-64 Linux with writable `/dev/kvm`, Nix, and Podman. See the [methodology](methodology.md) for cache controls, timing boundaries, traffic accounting, and resource requirements. Run these commands from `benchmarks/adaptive-downloads`:
+Use x86-64 Linux with writable `/dev/kvm`, Nix, and Podman. See the [methodology](methodology.md) for cache controls, timing boundaries, traffic accounting, and resource requirements. Run these commands from `benchmarks/dynamic-downloads`:
 
 ```sh
 nix develop path:./nix
