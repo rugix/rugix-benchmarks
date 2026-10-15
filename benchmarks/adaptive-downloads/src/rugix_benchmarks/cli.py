@@ -13,7 +13,7 @@ from .vm import build_native_image
 
 @click.group()
 def main():
-    """Prepare shared tools and reproduce native adaptive-update measurements."""
+    """Reproduce the adaptive-update installation experiment."""
     logging.basicConfig(level=logging.INFO,format="%(asctime)s %(levelname)s %(message)s")
 
 @main.command("tools")
@@ -24,7 +24,7 @@ def build_tools():
 
 @main.command("prepare")
 @click.option("--plan",type=click.Path(exists=True,path_type=Path),multiple=True,
-              default=("adaptive-downloads/plans/paper.json","adaptive-downloads/plans/calculator.json"))
+              default=("plans/paper.json","plans/calculator.json"))
 @click.option("--import-corpus",type=click.Path(exists=True,path_type=Path))
 def prepare(plan,import_corpus):
     """Build images, bundles, source indices and blank-target VM fixtures."""
@@ -53,7 +53,7 @@ def prepare(plan,import_corpus):
     fixtures.prepare(combined)
 
 @main.command("run")
-@click.option("--plan",type=click.Path(exists=True,path_type=Path),default="adaptive-downloads/plans/paper.json")
+@click.option("--plan",type=click.Path(exists=True,path_type=Path),default="plans/paper.json")
 @click.option("--output",type=click.Path(path_type=Path),default=".cache/paper")
 @click.option("--limit",type=click.IntRange(min=1))
 def run(plan,output,limit):
@@ -64,7 +64,7 @@ def run(plan,output,limit):
 @click.option("--output",type=click.Path(path_type=Path),default=".cache/smoke")
 def smoke(output):
     """Verify all native candidates once on the monthly pair at zero delay."""
-    plan = load_plan(ROOT / "adaptive-downloads/plans/paper.json")
+    plan = load_plan(ROOT / "plans/paper.json")
     smoke_plan = plan.model_copy(update={"workloads":[plan.workloads[0]],"rtt_ms":[0],"repetitions":1})
     path = CACHE / "smoke-plan.json"
     save_json(path,smoke_plan)

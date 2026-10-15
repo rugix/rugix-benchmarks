@@ -6,28 +6,28 @@ These benchmarks install real Rugix and RAUC bundles into disposable KVM virtual
 
 Use an x86-64 Linux machine with writable `/dev/kvm`, Nix with flakes enabled, and Podman. Allow at least 12 GiB of free RAM and about 150 GiB of disk space for images, fixtures, packet captures, and native build dependencies. Run one campaign at a time on an otherwise idle host.
 
-From the repository root:
+Run from `benchmarks/adaptive-downloads`. All Python dependencies, recipes, fixtures, plans, and reporting code are local to this experiment. The generated Python data models are included, so reproducing the experiment does not require Sidex tooling:
 
 ```sh
 nix develop path:./nix
 uv sync --locked
-uv run --locked rugix-benchmarks prepare
-uv run --locked rugix-benchmarks smoke
-uv run --locked rugix-benchmarks run --plan adaptive-downloads/plans/paper.json --output .cache/paper
-uv run --locked rugix-benchmarks run --plan adaptive-downloads/plans/calculator.json --output .cache/calculator
-uv run --locked rugix-benchmarks report
+uv run --locked benchmark prepare
+uv run --locked benchmark smoke
+uv run --locked benchmark run --plan plans/paper.json --output .cache/paper
+uv run --locked benchmark run --plan plans/calculator.json --output .cache/calculator
+uv run --locked benchmark report
 ```
 
 Preparation builds pinned tools, four historical Debian filesystems, four bundle variants, and three source fixtures. It also runs the original byte simulator. Preparation and measurement run separately so builds and simulations do not compete with timed installs.
 
-Output remains in `.cache`. The reporting command exports checked samples, tables, correction factors, provenance, and publication figures into `adaptive-downloads/results/2026-10`. Packet captures and full native logs remain in each campaign's `runs` directory. Successful runs discard disposable VM disks after saving evidence. Failed runs retain their VM disks and logs.
+Output remains in `.cache`. The reporting command exports checked samples, tables, correction factors, provenance, and publication figures into `results/2026-10`. Packet captures and full native logs remain in each campaign's `runs` directory. Successful runs discard disposable VM disks after saving evidence. Failed runs retain their VM disks and logs.
 
-Rerun the same `run` command to resume an interrupted campaign. It checks the plan, measurement code, tools, bundle identities, and fixture identities. It recovers completed per-run records if interruption occurred before the aggregate was saved. Changed inputs require a new output directory. Preserve a failed run under a separate diagnostics directory before retrying; the runner does not overwrite it.
+Rerun the same `run` command to resume an interrupted campaign. It checks the plan, measurement code, tools, bundle identities, and fixture identities. It recovers completed per-run records if interruption occurred before the aggregate was saved. Changed inputs require a new output directory. Published samples and provenance retain their original paths and hashes; the original campaign layout and measurement code are available in [commit `390c70f`](https://github.com/rugix/rugix-benchmarks/tree/390c70f0a7676b541d348924d6fe6414e0d54d8d). Preserve a failed run under a separate diagnostics directory before retrying; the runner does not overwrite it.
 
 To inspect a campaign in small steps:
 
 ```sh
-uv run --locked rugix-benchmarks run --plan adaptive-downloads/plans/paper.json --output .cache/paper --limit 1
+uv run --locked benchmark run --plan plans/paper.json --output .cache/paper --limit 1
 ```
 
 ## Corpus and Native Installers

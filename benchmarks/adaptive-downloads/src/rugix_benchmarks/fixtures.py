@@ -39,8 +39,8 @@ def prepare_disk(workload):
 def configure_slots(vm):
     vm.run(["systemctl","stop","rugix-ctrl-daemon.service"],check=False,hide=True)
     vm.run(["systemctl","stop","systemd-timesyncd.service"],check=False,hide=True)
-    vm.upload(ROOT / "adaptive-downloads/fixtures/rugix-system.toml","/etc/rugix/system.toml")
-    vm.upload(ROOT / "adaptive-downloads/fixtures/rauc-system.conf","/etc/rauc/system.conf")
+    vm.upload(ROOT / "fixtures/rugix-system.toml","/etc/rugix/system.toml")
+    vm.upload(ROOT / "fixtures/rauc-system.conf","/etc/rauc/system.conf")
     vm.run(["mount","-o","remount,rw","/run/rugix/mounts/config"],hide=True)
     vm.run(["modprobe","nbd"],hide=True)
 

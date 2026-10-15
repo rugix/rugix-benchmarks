@@ -14,7 +14,7 @@ def configure(vm, plan, workload, candidate, rtt, directory):
     runtime = tools()["runtime"]
     for name in ("nginx","iperf3","tcpdump","ethtool"):
         vm.run(["ln","-sf",runtime+"/bin/"+name,"/usr/local/bin/"+name],hide=True)
-    vm.upload(ROOT / "adaptive-downloads/fixtures/setup-network.sh","/root/setup-network.sh")
+    vm.upload(ROOT / "fixtures/setup-network.sh","/root/setup-network.sh")
     setup = vm.run(["bash","-x","/root/setup-network.sh",str(rtt//2),str(plan.rate_bits_per_second)],
                    hide=True,check=False,timeout=30)
     (directory / "network-setup.log").write_text(setup.stdout+setup.stderr)
@@ -26,7 +26,7 @@ def configure(vm, plan, workload, candidate, rtt, directory):
     vm.run(["cp",ASSETS+"/tls/server.key","/etc/nginx/bench.key"],hide=True)
     vm.run(["chmod","0644","/etc/nginx/bench.crt"],hide=True)
     vm.run(["chmod","0600","/etc/nginx/bench.key"],hide=True)
-    vm.upload(ROOT / "adaptive-downloads/fixtures/nginx.conf","/etc/nginx/bench.conf")
+    vm.upload(ROOT / "fixtures/nginx.conf","/etc/nginx/bench.conf")
     vm.run(["ip","netns","exec","bench-origin","nginx","-t","-p","/run/bench/","-c","/etc/nginx/bench.conf"],hide=True)
     vm.run(["ip","netns","exec","bench-origin","nginx","-p","/run/bench/","-c","/etc/nginx/bench.conf"],hide=True)
     for peer,command in (("client",["ethtool","-k",CLIENT]),

@@ -1,7 +1,7 @@
 [project]
-name = "rugix-benchmarks"
+name = "adaptive-download-benchmark"
 version = "0.1.0"
-description = "Reproducible delta-update simulations and native installation benchmarks"
+description = "Reproduce adaptive-update installation times and network traffic"
 requires-python = ">=3.12"
 dependencies = [
   "click>=8.1,<9",
@@ -11,7 +11,7 @@ dependencies = [
   "rugix-testkit",
 ]
 [project.scripts]
-rugix-benchmarks = "rugix_benchmarks.cli:main"
+benchmark = "rugix_benchmarks.cli:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

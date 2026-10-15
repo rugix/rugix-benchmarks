@@ -165,7 +165,7 @@ def campaign_inputs(plan):
     package = ROOT / "src/rugix_benchmarks"
     files = [package / (name + ".py") for name in ("common", "capture", "network", "wire", "runner", "fixtures", "images", "vm")]
     files += list((package / "models").rglob("*.py"))
-    files += [path for path in (ROOT / "adaptive-downloads/fixtures").rglob("*") if path.is_file()]
+    files += [path for path in (ROOT / "fixtures").rglob("*") if path.is_file()]
     files += [ROOT / "uv.lock", ROOT / "nix/flake.nix", ROOT / "nix/flake.lock"]
     files += list({CACHE / "theory" / workload.id / (bundle_key(candidate) + ".json") for workload in plan.workloads for candidate in plan.candidates})
     files += list({CACHE / "theory" / workload.target.id / "base.json" for workload in plan.workloads})

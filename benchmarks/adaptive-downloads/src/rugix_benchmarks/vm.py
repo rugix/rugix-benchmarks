@@ -12,7 +12,7 @@ from .common import BAKERY_IMAGE, CACHE, ROOT, SOURCE_DATE, digest, execute, fin
 def build_native_image():
     image = CACHE / "projects/native/build/benchmark-amd64/system.img"
     project = CACHE / "projects/native"
-    template = ROOT / "adaptive-downloads/bakery"
+    template = ROOT / "bakery"
     inputs = dict(bakery_image=BAKERY_IMAGE, source_date=SOURCE_DATE,
                   recipes=fingerprint_paths(path for path in template.rglob("*") if path.is_file()),
                   runtime_archive_sha256=tools()["runtime_archive_sha256"],
@@ -28,7 +28,7 @@ def build_native_image():
         return image
     if (project / "recipes").exists():
         shutil.rmtree(project / "recipes")
-    shutil.copytree(ROOT / "adaptive-downloads/bakery",project,dirs_exist_ok=True)
+    shutil.copytree(ROOT / "bakery",project,dirs_exist_ok=True)
     files = project / "recipes/toolchain/files"
     files.mkdir(parents=True,exist_ok=True)
     shutil.copyfile(CACHE / "runtime.tar.gz",files / "runtime.tar.gz")
@@ -36,7 +36,7 @@ def build_native_image():
         shutil.copyfile(CACHE / "keys" / name,files / name)
     dbus = Path(tools()["runtime"]) / "share/dbus-1/system.d/de.pengutronix.rauc.conf"
     shutil.copyfile(dbus,files / "rauc-dbus.conf")
-    env = dict(os.environ,DOCKER="podman",RUGIX_DEV="true",RUGIX_BAKERY_IMAGE=BAKERY_IMAGE,
+    env = dict(os.environ,DOCKER="podman",RUGIX_DEV="false",RUGIX_BAKERY_IMAGE=BAKERY_IMAGE,
                RUGIX_CACHE_VOLUME="rugix-benchmarks-native")
     execute(["./run-bakery","bake","image","benchmark-amd64","--release-version",
              "20250701000000","--source-date",SOURCE_DATE],cwd=project,

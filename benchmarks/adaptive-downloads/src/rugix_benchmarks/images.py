@@ -12,7 +12,7 @@ def prepare(plan):
               for image in (workload.source, workload.target)}
     project = CACHE / "projects/corpus"
     if not project.exists():
-        shutil.copytree(ROOT / "delta-updates/rugix-project", project,
+        shutil.copytree(ROOT / "corpus", project,
                         ignore=shutil.ignore_patterns("build", "__pycache__"))
     for image in images.values():
         destination = CACHE / "images" / image.id
@@ -43,7 +43,7 @@ layer = "{image.id}"
 architecture = "arm64"
 target = "generic-grub-efi"
 ''')
-        env = dict(os.environ, DOCKER="podman", RUGIX_DEV="true",
+        env = dict(os.environ, DOCKER="podman", RUGIX_DEV="false",
                    RUGIX_BAKERY_IMAGE=BAKERY_IMAGE, RUGIX_CACHE_VOLUME="rugix-benchmarks-corpus")
         execute(["./run-bakery", "bake", "image", image.id, "--release-version",
                  "20250701000000", "--source-date", SOURCE_DATE], cwd=project,

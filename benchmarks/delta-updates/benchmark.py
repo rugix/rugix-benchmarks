@@ -20,12 +20,11 @@ import click
 BENCHMARK_DIR = pathlib.Path(__file__).parent
 BUILD_DIR = BENCHMARK_DIR / "build"
 RESULTS_DIR = BENCHMARK_DIR / "results"
-ROOT_DIR = BENCHMARK_DIR.parent
 
 RUGIX_BUNDLER = pathlib.Path(
     os.environ.get("RUGIX_BUNDLER")
     or shutil.which("rugix-bundler")
-    or ROOT_DIR / ".cache" / "bin" / "rugix-bundler"
+    or BENCHMARK_DIR / ".cache" / "bin" / "rugix-bundler"
 )
 
 SNAPSHOTS = [
