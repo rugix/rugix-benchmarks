@@ -1,0 +1,19 @@
+[tasks."delta:benchmark"]
+description = "Run a delta-update byte simulation command."
+dir = "{{config_root}}/benchmarks/delta-updates"
+
+shell = "nix develop \"path:{{config_root}}/benchmarks/delta-updates/nix\" --command bash -euo pipefail -c"
+run = "python benchmark.py \"$@\""
+
+[tasks."delta:compute"]
+description = "Compute delta-update sizes."
+dir = "{{config_root}}/benchmarks/delta-updates"
+
+shell = "nix develop \"path:{{config_root}}/benchmarks/delta-updates/nix\" --command bash -euo pipefail -c"
+run = "bash compute-all.sh \"$@\""
+
+[tasks."dynamic:benchmark"]
+description = "Run a dynamic-download benchmark command."
+dir = "{{config_root}}/benchmarks/dynamic-downloads"
+shell = "nix develop \"path:{{config_root}}/benchmarks/dynamic-downloads/nix\" --command bash -euo pipefail -c"
+run = "uv run --locked benchmark \"$@\""
