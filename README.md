@@ -34,6 +34,20 @@ For the monthly Bookworm update, median installation times were:
 
 Rugix Ctrl 1.3.0 and RAUC had similar median installation times at 40 ms added delay across all three update pairs. The new pipeline substantially improves on both. At zero added delay, it showed no consistent speedup over Rugix Ctrl 1.3.0. See the [complete comparison](benchmarks/dynamic-downloads/README.md) for graphs, traffic measurements, and reproduction instructions.
 
+## Running Benchmarks
+
+Install [mise](https://mise.jdx.dev/) and Nix with flakes enabled. From the
+repository root, for example:
+
+```sh
+mise run delta:benchmark -- schedules
+mise run dynamic:benchmark -- --help
+```
+
+Use `mise run delta:compute` for the byte-size computation script. See the
+individual benchmark guides above for inputs, hardware requirements, and
+measurement plans.
+
 ## License
 
 Benchmark code is available under either the [Apache-2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT) license. External tools retain their own licenses.
